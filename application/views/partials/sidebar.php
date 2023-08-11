@@ -47,7 +47,7 @@
            								<span class="menu-text">Buat Surat</span>
            							</a>
            						</li>
-								   <?php if ($this->session->userdata('id_level') != 4) { ?>
+								   <?php if ($this->session->userdata('level') != 4) { ?>
            						<li class="menu-item">
            							<a href="<?= base_url('lembar_disposisi') ?>" class="menu-link">
            								<span class="menu-text">Buat Lembar Disposisi</span>
@@ -68,7 +68,7 @@
            				</div>
            			</li>
 
-					<?php if ($this->session->userdata('id_level') == 1 || $this->session->userdata('id_level') == 2 || $this->session->userdata('id_level') == 3) { ?>
+					<?php if ($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2 || $this->session->userdata('level') == 3) { ?>
 					<li class="menu-item">
            				<a href="<?= base_url('laporan') ?>" class="menu-link">
            					<span class="menu-icon"><i class="fe-book"></i></span>
@@ -76,7 +76,7 @@
            				</a>
            			</li>
 					<?php } ?>
-					<?php if ($this->session->userdata('id_level') == 1) { ?>
+					<?php if ($this->session->userdata('level') == 1) { ?>
 					   <li class="menu-item">
                             <a href="#menuCrm" data-bs-toggle="collapse" class="menu-link">
                                 <span class="menu-icon"><i data-feather="users"></i></span>
