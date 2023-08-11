@@ -7,6 +7,7 @@ class Insert_controller extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('Insert_model','ins');
+        $this->load->model('View_model','views');
         
     }
 
@@ -145,64 +146,69 @@ class Insert_controller extends CI_Controller {
         $pass = $this->input->post('pass', TRUE);
         
         $validasi = $this->views->login($user, $pass);
-
+        
         if ($validasi->num_rows() == 1) {
             $data = $validasi->row_array();
-            if (password_verify($pass, $data['pass'])) {
-                switch ($data['level']) {
-                    case '1':
-                        $this->session->set_userdata(array(
-                            'masuk' => TRUE,
-                            'nama' => $data['nama'],
-                            'user' => $data['user'],
-                            'pass' => $data['pass'],
-                            'level' => '1'
-                        ));
-                        redirect('Main');
-                        break;
+            switch ($data['level']) {
+                case '1':
+                    $this->session->set_userdata(array(
+                        'masuk' => TRUE,
+                        'nama' => $data['nama'],
+                        'user' => $data['user'],
+                        'pass' => $data['pass'],
+                        'level' => '1'
+                    ));
+                    redirect('Dashboard');
+                    break;
 
-                    case '2':
-                        $this->session->set_userdata(array(
-                            'masuk' => TRUE,
-                            'nama' => $data['nama'],
-                            'user' => $data['user'],
-                            'pass' => $data['pass'],
-                            'level' => '2',
-                            'isPimpinan' => $data['isPimpinan']
-                        ));
-                        redirect('Main');
-                        break;
+                case '2':
+                    $this->session->set_userdata(array(
+                        'masuk' => TRUE,
+                        'nama' => $data['nama'],
+                        'user' => $data['user'],
+                        'pass' => $data['pass'],
+                        'level' => '2',
+                        'isPimpinan' => $data['isPimpinan']
+                    ));
+                    redirect('Dashboard');
+                    break;
 
-                    case '3':
-                        $this->session->set_userdata(array(
-                            'masuk' => TRUE,
-                            'nama' => $data['nama'],
-                            'user' => $data['user'],
-                            'pass' => $data['pass'],
-                            'level' => '3'
-                        ));
-                        redirect('Main');
-                        break;
+                case '3':
+                    $this->session->set_userdata(array(
+                        'masuk' => TRUE,
+                        'nama' => $data['nama'],
+                        'user' => $data['user'],
+                        'pass' => $data['pass'],
+                        'level' => '3'
+                    ));
+                    redirect('Dashboard');
+                    break;
 
-                    case '4':
-                        $this->session->set_userdata(array(
-                            'masuk' => TRUE,
-                            'nama' => $data['nama'],
-                            'user' => $data['user'],
-                            'pass' => $data['pass'],
-                            'level' => '4'
-                        ));
-                        redirect('Main');
-                        break;
-                    default:
-                        # code...
-                        break;
-                }
+                case '4':
+                    $this->session->set_userdata(array(
+                        'masuk' => TRUE,
+                        'nama' => $data['nama'],
+                        'user' => $data['user'],
+                        'pass' => $data['pass'],
+                        'level' => '4'
+                    ));
+                    redirect('Dashboard');
+                    break;
+                default:
+                    # code...
+                    break;
             }
+
         }else {
             redirect('login');
         }
         
+    }
+
+    function logout() 
+    {
+        $this->session->sess_destroy();
+        redirect('login');
     }
 
     function rules() 

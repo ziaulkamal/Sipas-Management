@@ -44,15 +44,15 @@
 
 							</div>
 
-							<form class="user" method="POST" action="<?= base_url() ?>"
+							<form class="user" method="POST" action="<?= base_url($action) ?>"
 								enctype="multipart/form-data">
 								<div class="mb-3">
 									<label class="form-label">Username</label>
 									<input class="form-control" type="text" name="user" required>
 								</div>
 								<div class="mb-3">
-									<label class="form-label">Password</label>
 									<div class="input-group input-group-merge">
+										<label class="form-label">Password</label>
 										<input type="text" name="pass" class="form-control">
 									</div>
 								</div>

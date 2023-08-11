@@ -54,10 +54,17 @@ class View_model extends CI_Model
 
     function login($user,$pass)
     {
+        $this->db->select('pass');
         $this->db->where('user', $user);
-        $this->db->where('pass', $pass);
-        $this->db->limit(1);
-        return $this->db->get('tb_auth');
+        $data = $this->db->get('tb_auth')->row_array();
+        if (password_verify($pass, $data['pass'])) {
+            $this->db->where('user', $user);
+            $this->db->limit(1);
+            return $this->db->get('tb_auth');
+        } else {
+            return;
+        }
+       
         
     }
 }

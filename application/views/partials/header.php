@@ -45,4 +45,5 @@
 </head>
 
 <body>
+	<?php var_dump($this->session->userdata());?>
 	<div id="wrapper">

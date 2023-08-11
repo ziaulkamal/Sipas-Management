@@ -32,6 +32,7 @@ $route['admin/go/process'] = 'Insert_controller/process_create_user';
 
 // auth
 $route['login'] = 'Insert_controller/login';
+$route['logout'] = 'Insert_controller/logout';
 $route['auth/login'] = 'Insert_controller/proses_login';
 
 $route['404_override'] = '';
