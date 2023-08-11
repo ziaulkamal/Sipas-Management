@@ -25,6 +25,12 @@ $route['persuratan/go/prog_update_document']     = 'Update_controller/prog_updat
 
 // end persuratan
 
+// pimpinan
+
+
+
+// end pimpinan 
+
 
 
 $route['404_override'] = '';
