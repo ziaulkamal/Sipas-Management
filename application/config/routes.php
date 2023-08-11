@@ -25,6 +25,7 @@ $route['persuratan/go/prog_update_document']     = 'Update_controller/prog_updat
 
 // end persuratan
 
+
 // admin
 $route['admin/create_user'] = 'Insert_controller/create_user';
 $route['admin/user/listing'] = 'View_controller/user_view';
@@ -34,6 +35,13 @@ $route['admin/go/process'] = 'Insert_controller/process_create_user';
 $route['login'] = 'Insert_controller/login';
 $route['logout'] = 'Insert_controller/logout';
 $route['auth/login'] = 'Insert_controller/proses_login';
+
+// pimpinan
+
+
+
+// end pimpinan 
+
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
