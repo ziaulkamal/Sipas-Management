@@ -24,7 +24,7 @@
 				<div class="card">
 					<div class="card-body">
 						<h5 class="mb-4 text-uppercase"><i class="mdi mdi-google-maps me-1"></i>
-							Tracking Suratss</h5>
+							Tracking Surat</h5>
 
 						<ul class="list-unstyled timeline-sm">
 							<li class="timeline-sm-item">
