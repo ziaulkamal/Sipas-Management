@@ -89,7 +89,139 @@ class Insert_controller extends CI_Controller {
         
     }
 
+    function create_user() 
+    {
+        $data = array(
+            'title'     => 'Daftar Petugas',
+            'titlePage' => 'Daftar Petugas',
+            'page'      => 'page/petugas/Daftar_petugas',
+            'action'    => 'admin/go/process'
+        );
+        $this->load->view('index', $data);    
+    }
 
+    function process_create_user() 
+    {
+        $this->rules();
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->create_user();
+        } else{
+            $pass = $this->input->post('pass', TRUE);
+
+            $data = array(
+                'nama'         => $this->input->post('nama', TRUE),
+                'user'         => strtolower($this->input->post('user', TRUE)),
+                'pass'         => password_hash($pass, PASSWORD_DEFAULT),
+                'level'        => $this->input->post('level', TRUE),
+                'regisDate'    => date('Y-m-d'),
+                
+            );
+            if ($this->input->post('level') == 2) {
+                $data['isPimpinan'] = $this->input->post('subLevel');
+            }
+
+            $this->session->set_flashdata('success', 'Data petugas berhasil ditambahkan!');
+            $this->ins->insert_user($data);
+            
+            redirect('daftar_petugas');
+        }
+    }
+
+    function login() {
+        $data = array(
+            'title' => 'Login',
+            'action' => 'auth/login'
+        );
+
+        $this->load->view('page/auth/login', $data);
+        
+    }
+
+    public function proses_login()
+    {
+
+        $user = strtolower($this->input->post('user', TRUE));
+        $pass = $this->input->post('pass', TRUE);
+        
+        $validasi = $this->views->login($user, $pass);
+
+        if ($validasi->num_rows() == 1) {
+            $data = $validasi->row_array();
+            if (password_verify($pass, $data['pass'])) {
+                switch ($data['level']) {
+                    case '1':
+                        $this->session->set_userdata(array(
+                            'masuk' => TRUE,
+                            'nama' => $data['nama'],
+                            'user' => $data['user'],
+                            'pass' => $data['pass'],
+                            'level' => '1'
+                        ));
+                        redirect('Main');
+                        break;
+
+                    case '2':
+                        $this->session->set_userdata(array(
+                            'masuk' => TRUE,
+                            'nama' => $data['nama'],
+                            'user' => $data['user'],
+                            'pass' => $data['pass'],
+                            'level' => '2',
+                            'isPimpinan' => $data['isPimpinan']
+                        ));
+                        redirect('Main');
+                        break;
+
+                    case '3':
+                        $this->session->set_userdata(array(
+                            'masuk' => TRUE,
+                            'nama' => $data['nama'],
+                            'user' => $data['user'],
+                            'pass' => $data['pass'],
+                            'level' => '3'
+                        ));
+                        redirect('Main');
+                        break;
+
+                    case '4':
+                        $this->session->set_userdata(array(
+                            'masuk' => TRUE,
+                            'nama' => $data['nama'],
+                            'user' => $data['user'],
+                            'pass' => $data['pass'],
+                            'level' => '4'
+                        ));
+                        redirect('Main');
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+            }
+        }else {
+            redirect('login');
+        }
+        
+    }
+
+    function rules() 
+    {
+        $this->form_validation->set_rules('nama', 'Nama', 'trim|required|min_length[5]|max_length[12]',array('required' => '%s wajib di isi !','min_length' => '%s terlalu pendek !','max_length' => '%s terlalu panjang !',));
+        $this->form_validation->set_rules('user', 'User', 'trim|required|min_length[5]|max_length[12]',array('required' => '%s wajib di isi !','min_length' => '%s terlalu pendek !','max_length' => '%s terlalu panjang !',));
+        $this->form_validation->set_rules('pass', 'Pass', 'trim|required|min_length[5]|max_length[12]',array('required' => '%s wajib di isi !','min_length' => '%s terlalu pendek !','max_length' => '%s terlalu panjang !',));
+        // $this->form_validation->set_rules('level', 'Level', 'required|callback_check_select');
+
+    }
+
+    // function check_select($value)
+    // {
+    //     if ($value == '--Pilih--') {
+    //         $this->session->set_flashdata('check_select', 'Pilih level akses yang valid.');
+    //         return FALSE;
+    //     }
+    //     return in_array($value, array('admin', 'persuratan', 'kajati', 'wakajati', 'piket'));
+    // }
 
     function _rules($validasi) {
         switch ($validasi) {

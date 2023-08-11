@@ -35,6 +35,23 @@ class View_controller extends CI_Controller {
         $this->load->view('index', $data);       
     }
 
+    function user_view()
+    {
+        $load = $this->views->getAllUser()->result();
+        $data = array(
+            'title' => 'Daftar User',
+            'titlePage' => 'Daftar User',
+            'data' => $load,
+            'table' => true,
+            'page' => 'page/petugas/list_petugas'
+        );
+
+        $this->load->view('index', $data);
+        
+    }
+
+
+
 }
 
 /* End of file View_controller.php and path \application\controllers\View_controller.php */

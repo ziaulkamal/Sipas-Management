@@ -46,6 +46,20 @@ class View_model extends CI_Model
         return $this->db->get();
     }
 
+    function getAllUser()
+    {
+        $this->db->order_by('idAuth', 'desc');
+        return $this->db->get('tb_auth');
+    }
+
+    function login($user,$pass)
+    {
+        $this->db->where('user', $user);
+        $this->db->where('pass', $pass);
+        $this->db->limit(1);
+        return $this->db->get('tb_auth');
+        
+    }
 }
 
 

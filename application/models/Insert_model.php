@@ -120,6 +120,13 @@ class Insert_model extends CI_Model
         $this->db->update('tb_disposisi', $data);
         return;
     }
+
+    function insert_user($data)
+    {
+        $this->db->insert('tb_auth', $data);
+    }
+
+
 }
 
 
