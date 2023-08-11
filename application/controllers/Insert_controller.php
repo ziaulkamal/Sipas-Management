@@ -210,18 +210,8 @@ class Insert_controller extends CI_Controller {
         $this->form_validation->set_rules('nama', 'Nama', 'trim|required|min_length[5]|max_length[12]',array('required' => '%s wajib di isi !','min_length' => '%s terlalu pendek !','max_length' => '%s terlalu panjang !',));
         $this->form_validation->set_rules('user', 'User', 'trim|required|min_length[5]|max_length[12]',array('required' => '%s wajib di isi !','min_length' => '%s terlalu pendek !','max_length' => '%s terlalu panjang !',));
         $this->form_validation->set_rules('pass', 'Pass', 'trim|required|min_length[5]|max_length[12]',array('required' => '%s wajib di isi !','min_length' => '%s terlalu pendek !','max_length' => '%s terlalu panjang !',));
-        // $this->form_validation->set_rules('level', 'Level', 'required|callback_check_select');
 
     }
-
-    // function check_select($value)
-    // {
-    //     if ($value == '--Pilih--') {
-    //         $this->session->set_flashdata('check_select', 'Pilih level akses yang valid.');
-    //         return FALSE;
-    //     }
-    //     return in_array($value, array('admin', 'persuratan', 'kajati', 'wakajati', 'piket'));
-    // }
 
     function _rules($validasi) {
         switch ($validasi) {
