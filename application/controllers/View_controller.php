@@ -47,7 +47,23 @@ class View_controller extends CI_Controller {
         );
 
         $this->load->view('index', $data);
+    }
+
+    function pimpinan_view() {
+        // $pimpinan = $this->session->userdata('isPimpinan');
         
+        $pimpinan = 'kajati';
+        $load = $this->views->getAllDisposisi_byLevel($pimpinan)->result();
+        $data = array(
+            'title' => 'Berkas Masuk',
+            'titlePage' => 'Daftar Berkas Masuk',
+            'data' => $load,
+            'table' => true,
+            'pimpinan' => true,
+            'page' => 'page/piket/list_berkas'
+        );
+
+        $this->load->view('index', $data);
     }
 
 

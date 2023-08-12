@@ -64,8 +64,22 @@ class View_model extends CI_Model
         } else {
             return;
         }
-       
-        
+    }
+
+    function getAllDisposisi_byLevel($pimpinan) {
+        $this->db->join('tb_disposisi', 'tb_disposisi.trxId = tb_trx.idTrx');
+        $this->db->join('trx_detail', 'trx_detail.trxId = tb_trx.idTrx');
+        $this->db->where('tb_disposisi.tujuanPimpinanD', $pimpinan);
+        $this->db->order_by('tb_trx.tglSuratMasuk', 'desc');       
+        return $this->db->get('tb_trx');
+    }
+
+    function getSingleDisposisi_byIdTrx($idTrx) {
+        $this->db->join('tb_disposisi', 'tb_disposisi.trxId = tb_trx.idTrx');
+        $this->db->join('trx_detail', 'trx_detail.trxId = tb_trx.idTrx');
+        $this->db->where('tb_disposisi.trxId', $idTrx);
+        // $this->db->order_by('tb_trx.tglSuratMasuk', 'desc');       
+        return $this->db->get('tb_trx');
     }
 }
 

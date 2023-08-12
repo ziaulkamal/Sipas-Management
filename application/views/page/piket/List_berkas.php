@@ -24,7 +24,7 @@
 						<div class="table-responsive">
 							<table id="basic-datatable" class="table dt-responsive nowrap w-100">
 								<thead class="table-light">
-									<?php if ($this->uri->segment(1) != 'piket') { ?>
+									<?php if ($this->uri->segment(1) == 'persuratan') { ?>
 									<tr>
 										<th>No</th>
 										<th>Nomor Surat</th>
@@ -34,12 +34,22 @@
 										<th>Status Surat</th>
 										<th>Tanggal Update</th>
 									</tr>
-									<?php }else { ?>
+									<?php }elseif($this->uri->segment(1) == 'piket') { ?>
 									<tr>
 										<th>No</th>
 										<th>Nomor Surat</th>
 										<th>Judul Surat</th>
 										<th>Tanggal Surat Pengirim</th>
+										<!-- <th>Tanggal Update System</th> -->
+										<th>Status Surat</th>
+									</tr>
+									<?php }elseif($this->uri->segment(1) == 'pimpinan') { ?>
+									<tr>
+										<th>No</th>
+										<th>Kode</th>
+										<th>Asal Surat</th>
+										<th>Tanggal Penyelesaian</th>
+										<th>Rincian </th>
 										<!-- <th>Tanggal Update System</th> -->
 										<th>Status Surat</th>
 									</tr>
@@ -51,7 +61,7 @@
 									<?php 
 									$no = 1;
 									foreach ($data as $res) { 
-										if ($this->uri->segment(1) != 'piket') { ?>
+										if ($this->uri->segment(1) == 'persuratan') { ?>
 									<tr>
 										<td><?= $no++; ?></td>
 										<td><?= $res->nomorDTrx; ?></td>
@@ -62,35 +72,31 @@
 										<td><a href="<?= base_url('./public/lampiran/').$res->lampiranDTrx ?>"
 												class="badge badge-outline-blue"><i class="fe-download"></i> Download Berkas</a></td>
 										<td>
-											<?php switch ($res->resPimpinan) {
-											case '1': ?>
-											<a class="badge badge-outline-info"><i class="fe-check"></i> Diterima Pimpinan</a>
-											<a class="badge badge-outline-warning ">Edit Lembaran Disposisi</a>
-											<?php break;
-												
-												default:
 
-												switch ($res->resPersuratan) {
-													case '1': ?>
-														<a href="<?= base_url('persuratan/surat/update_document/').$res->idTrx ?>" class="badge badge-outline-warning"><i class="fe-edit"></i> Edit Lembaran Disposisi</a>
-														<a class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
-														<?php break;
-													
-													default: ?>
-														<a href="<?= base_url('persuratan/surat/add_document/').$res->idTrx ?>" class="badge badge-outline-success"><i class="fe-info"></i> Proses Lembaran Disposisi</a>
-														<?php break;
-												}
+										<?php 
+											if ($res->resPersuratan == 1) { ?>
+												<a class="badge badge-outline-primary"><i class="fe-corner-right-up"></i> Menunggu Persetujuan</a>
+												<a href="<?= base_url('persuratan/surat/update_document/').$res->idTrx ?>" class="badge badge-outline-warning"><i class="fe-edit"></i> Edit Lembaran Disposisi</a>
+												<a class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
+											<?php }elseif ($res->resPersuratan == 0 && $res->resPimpinan == 1) { ?>
+												<a type="button" id="<?= $res->idTrx ?>" class="badge badge-outline-secondary "><i class="fe-x"></i> Ditolak [Lihat ulasan]</a>
+												<a href="<?= base_url('persuratan/surat/update_document/').$res->idTrx ?>" class="badge badge-outline-warning"><i class="fe-edit"></i> Edit Lembaran Disposisi</a>
+												<a class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
+											<?php }else { ?>
+												<a href="<?= base_url('persuratan/surat/add_document/').$res->idTrx ?>" class="badge badge-outline-success"><i class="fe-info"></i> Proses Lembaran Disposisi</a>
+											<?php }
+										
+										
+										
+										
+										?>
 											
-
-											break;
-											} ?>
-
 
 
 										</td>
 										<td><?= $res->updateTrxDate; ?></td>
 									</tr>
-									<?php }else { ?>
+									<?php }elseif($this->uri->segment(1) == 'piket') { ?>
 									<tr>
 										<td><?= $no++; ?></td>
 										<td><?= $res->nomorDTrx; ?></td>
@@ -107,7 +113,7 @@
 											<?php break;
 												
 												default: ?>
-											<a class="badge badge-outline-success"><i class="fe-corner-right-up"></i> Menunggu Persetujuan</a>
+											<a class="badge badge-outline-primary"><i class="fe-corner-right-up"></i> Menunggu Persetujuan</a>
 											<a href="<?= base_url('piket/surat/update/').$res->idTrx ?>"
 												class="badge badge-outline-warning"><i class="fe-edit"></i> Edit</a>
 											<a href="<?= base_url('piket/surat/delete/').$res->idTrx ?>"
@@ -119,7 +125,36 @@
 
 										</td>
 									</tr>
+									<?php }elseif($this->uri->segment(1) == 'pimpinan') { 
+										if ($res->resPersuratan == 1 && $res->resPimpinan == 1 || $res->resPersuratan == 1 && $res->resPimpinan == 0) { ?>
+									<tr>
+										<td><?= $no++; ?></td>
+										<td><?= strtoupper($res->tingkatKeamananD); ?></td>
+										<td><?= strtoupper($res->asalSuratD); ?></td>
+										<td><?= $res->tglPenerimaanD; ?></td>
+										<td><a class="badge badge-outline-info"><i class="fe-info"></i> Lihat</a></td>
+										<!-- <td><?= $res->updateTrxDate; ?></td> -->
+										<td>
+											<?php switch ($res->resPimpinan) {
+											case '1': ?>
+											<a class="badge badge-outline-info"><i class="fe-info"></i> Dalam Proses</a>
+											<a class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
+											<?php break;
+												
+												default: ?>
+											<a href="<?= base_url('pimpinan/surat/add_document/').$res->idTrx ?>" class="badge badge-outline-success"><i class="fe-corner-right-up"></i> Proses Disposisi</a>
+											<a id="pimpinan-tolak-<?= $res->trxId ?>" type="button"
+												class="badge badge-outline-warning"><i class="fe-edit"></i> Tolak</a>
+											<?php break;
+											} ?>
+
+
+
+										</td>
+									</tr>
 									<?php }
+
+									}
 
 								 } ?>
 

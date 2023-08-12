@@ -89,7 +89,14 @@ class Insert_controller extends CI_Controller {
        
         
     }
+    
 
+    
+    /**
+     * Method create_user
+     * Codingan Rijal
+     * @return void
+     */
     function create_user() 
     {
         $data = array(

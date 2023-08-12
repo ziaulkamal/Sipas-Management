@@ -118,7 +118,46 @@ class Insert_model extends CI_Model
         $this->db->insert('log_trx', $logTrx_1);
         $this->db->where('idDisposisi', $idDisposisi);
         $this->db->update('tb_disposisi', $data);
+        $trxDatas = array(
+            'resPersuratan' => 1,
+            'resPimpinan' => 0,
+            'updateTrxDate' => date('Y-m-d')
+        );
+        $this->db->where('idTrx', $idTrx);
+        $this->db->update('tb_trx', $trxDatas);
+        $this->db->where('trxId', $idTrx);
+        $trxDetail['ulasanDTrx'] = '';
+        $this->db->update('trx_detail', $trxDetail );
         return;
+    }
+
+    function save_disposisi_pimpinan($dataOne,$dataTwo) {
+        $logTrx_1 = array(
+            'trxId' => $dataTwo['idTrx'],
+            'level' => 2,
+            'logDate' => date('Y-m-d'),
+            'statusLog' => 1,
+            'keteranganLog' => 'Disposisi telah diproses oleh pimpinan dan telah dikirimkan ke persuratan'
+        );
+        $this->db->insert('log_trx', $logTrx_1);
+        $this->db->insert('disposisi_detail', $dataOne);
+        $updateDataTwo = array(
+            'partOne' => array(
+                'resPimpinan' => 1,
+                'updateTrxDate' => date('Y-m-d')
+            ),
+            'partTwo' => array(
+                'ulasanDTrx' => 'Tuntas !'
+            ),   
+        );
+        $this->db->where('idTrx', $dataTwo['idTrx']);
+        $this->db->update('tb_trx', $updateDataTwo['partOne']);
+        $this->db->where('trxId', $dataTwo['idTrx']);
+        $this->db->update('trx_detail', $updateDataTwo['partTwo']);
+        
+        
+        
+        
     }
 
     function insert_user($data)
@@ -126,6 +165,28 @@ class Insert_model extends CI_Model
         $this->db->insert('tb_auth', $data);
     }
 
+    function update_penolakan_byId($idTrx,$pesan,$pimpinan) {
+        $logTrx_1 = array(
+            'trxId' => $idTrx,
+            'level' => 3,
+            'logDate' => date('Y-m-d'),
+            'statusLog' => 1,
+            'keteranganLog' => 'Permohonan telah ditolak dengan Pesan : '. $pesan. ' Oleh '. $pimpinan
+        );
+        $this->db->insert('log_trx', $logTrx_1);
+        $dataOne = array(
+            'resPimpinan' => '1',
+            'resPersuratan' => '0',
+            'updateTrxDate' => date('Y-m-d')
+        );
+        $this->db->where('idTrx', $idTrx);
+        $this->db->update('tb_trx', $dataOne);        
+        $dataTwo['ulasanDTrx'] = $pesan;
+        $this->db->where('trxId', $idTrx);
+        $this->db->update('trx_detail', $dataTwo);
+        return;
+        
+    }
 
 }
 
