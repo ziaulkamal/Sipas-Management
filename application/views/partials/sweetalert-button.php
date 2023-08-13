@@ -50,7 +50,7 @@
                     title: "Tujuan Akhir <br />[ <?= ucwords($res->judulSurat) ?> ]",
                     html: `
                     <input type="hidden" id="idTrx" name="idTrx" value="<?= $res->trxId ?>">
-                    <select class="form-control" data-toggle="select2" data-width="100%">
+                    <select class="form-control" data-toggle="select2" data-width="100%" name="respon" id="review">
                         <option default selected>--Pilih--</option>
                         <option value="persuratan">Persuratan</option>
                         <option value="pimpinan">Pimpinan</option>
@@ -64,6 +64,7 @@
                         <option value="asisten pidana militer">Asisten Pidana Militer</option>
                         <option value="asisten tindak pidana umum">Asisten Tindak Pidana Umum</option>
                         <option value="asisten tindak pidana khusus">Asisten Tindak Pidana Khusus</option>
+                        <option value="lainnya">Lainnya</option>
                     </select>`,
                     icon: "info",
                     showCancelButton: true,
@@ -77,7 +78,7 @@
                         // Create a form element
                         const form = document.createElement('form');
                         form.method = 'POST';
-                        form.action = '<?= base_url("pimpinan/reject/surat/").$res->trxId ?>';
+                        form.action = '<?= base_url("persuratan/go/final/").$res->trxId ?>';
                         
                         // Add hidden fields to the form
                         const idTrxInput = document.createElement('input');
@@ -86,11 +87,6 @@
                         idTrxInput.value = idTrx;
                         form.appendChild(idTrxInput);
                         
-                        const reviewInput = document.createElement('input');
-                        reviewInput.type = 'hidden';
-                        reviewInput.name = 'pesanPenolakan';
-                        reviewInput.value = review;
-                        form.appendChild(reviewInput);
                         
                         // Append the form to the body and submit it
                         document.body.appendChild(form);

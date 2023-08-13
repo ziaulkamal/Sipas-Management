@@ -21,6 +21,7 @@ $route['persuratan/surat/add_document/(:any)']    = 'Update_controller/add_dispo
 $route['persuratan/go/prog_add_document']   = 'Update_controller/prog_insert_disposisi';
 $route['persuratan/surat/update_document/(:any)']   = 'Update_controller/update_disposisi/$1';
 $route['persuratan/go/prog_update_document']     = 'Update_controller/prog_update_disposisi';
+$route['persuratan/go/final/(:any)'] = 'Update_controller/final_result/$1';
 // $route['persuratan/surat/add_disposisi/(:any)/(:any)']   = 'Update_controller/add_disposisi_byId/$1/$2';
 
 // end persuratan
@@ -50,6 +51,8 @@ $route['disposisi/excel/download/(:any)'] = 'Generate_controller/excel_process/$
 
 //Pull Notif 
 $route['pull_notifications'] = 'Dashboard/pull_notifications';
+$route['follow']            = 'Dashboard/followNotification';
+$route['tracking/surat/(:any)']= 'View_controller/trackingLog/$1';
 
 
 $route['404_override'] = '';

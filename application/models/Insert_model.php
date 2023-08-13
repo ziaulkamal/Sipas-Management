@@ -14,14 +14,23 @@ class Insert_model extends CI_Model
      * @return void
      */
     function save_surat($genTrx,$dataOne, $dataTwo) {
-        $logTrx = array(
+        $logTrx1 = array(
+            'trxId' => $genTrx,
+            'level' => 4,
+            'logDate' => date('Y-m-d'),
+            'statusLog' => 0,
+            'keteranganLog' => 'Piket menerima surat masuk dengan nomor  '. $dataTwo['nomorDTrx'] . ' dan sedang diteruskan ke persuratan. '
+        );
+        $this->db->insert('log_trx', $logTrx1);
+
+        $logTrx2 = array(
             'trxId' => $genTrx,
             'level' => 3,
             'logDate' => date('Y-m-d'),
             'statusLog' => 1,
-            'keteranganLog' => 'Surat Nomor '. $dataTwo['nomorDTrx'] . ' Dengan Judul '. $dataOne['judulSurat'] .'Baru Saja Masuk dari Piket'
+            'keteranganLog' => 'Surat Nomor '. $dataTwo['nomorDTrx'] . ' Dengan Judul '. $dataOne['judulSurat'] .'Baru saja masuk dari piket'
         );
-        $this->db->insert('log_trx', $logTrx);
+        $this->db->insert('log_trx', $logTrx2);
         $this->db->insert('tb_trx', $dataOne);
         $this->db->insert('trx_detail', $dataTwo);
         return;   
@@ -37,14 +46,22 @@ class Insert_model extends CI_Model
      * @return void
      */
     function update_surat($idTrx,$dataOne,$dataTwo) {
-        $logTrx = array(
+        $logTrx1 = array(
             'trxId' => $idTrx,
+            'level' => 4,
+            'logDate' => date('Y-m-d'),
+            'statusLog' => 0,
+            'keteranganLog' => 'Piket melakukan perubahan dari surat masuk dengan nomor  '. $dataTwo['nomorDTrx'] . ' dan sedang kembali diteruskan ke persuratan. '
+        );
+        $this->db->insert('log_trx', $logTrx1);    
+        $logTrx2 = array(
+            'trxId' => $genTrx,
             'level' => 3,
             'logDate' => date('Y-m-d'),
             'statusLog' => 1,
-            'keteranganLog' => 'Surat Telah Diperbahrui dan dikirim kembali ke Persuratan'
+            'keteranganLog' => 'Pembaharuan surat dengan nomor '. $dataTwo['nomorDTrx'] . ' dan judul '. $dataOne['judulSurat'] .'Baru saja diterima kembali dari piket'
         );
-        $this->db->insert('log_trx', $logTrx);    
+        $this->db->insert('log_trx', $logTrx2);    
 
         $this->db->where('idTrx', $idTrx);
         $this->db->update('tb_trx', $dataOne);
@@ -77,23 +94,40 @@ class Insert_model extends CI_Model
 
     function save_disposisi($idTrx,$data,$idDisposisi) {
         $this->db->insert('tb_disposisi', $data);
-        sleep(1);
         $logTrx_1 = array(
             'trxId' => $idTrx,
             'level' => 4,
             'logDate' => date('Y-m-d'),
             'statusLog' => 1,
-            'keteranganLog' => 'Surat telah diterima bagian persuratan dan menunggu proses berikutnya'
+            'keteranganLog' => 'Surat telah diterima oleh persuratan dan dalam tahapan proses'
         );
         $this->db->insert('log_trx', $logTrx_1);
 
-        $logTrx_2 = array(
+        $logTrx_3 = array(
             'trxId' => $idTrx,
             'level' => 3,
             'logDate' => date('Y-m-d'),
-            'statusLog' => 1,
-            'keteranganLog' => 'Permohonan disposisi telah dikirimkan ke Pimpinan '. $data['tujuanPimpinanD']
+            'statusLog' => 0,
+            'keteranganLog' => 'Surat telah dikirimkan ke pimpinan ('. $data['tujuanPimpinanD'] .')'
         );
+        $this->db->insert('log_trx', $logTrx_3);
+        sleep(1);
+        $logTrx_2 = array(
+            'trxId' => $idTrx,
+            'logDate' => date('Y-m-d'),
+            'statusLog' => 1,
+            'keteranganLog' => 'Lembaran disposisi baru saja di kirim dari persuratan '
+        );
+        switch ($data['tujuanPimpinanD']) {
+            case 'kajati':
+                $logTrx_2['level'] = 1;
+                break;
+            
+            case 'wakajati':
+                $logTrx_2['level'] = 2;
+                break;
+            
+        }
         $this->db->insert('log_trx', $logTrx_2);
 
         $updateTrx = array(
@@ -107,14 +141,29 @@ class Insert_model extends CI_Model
     }
 
     function update_disposisi($idTrx,$data,$idDisposisi) {
-
-        $logTrx_1 = array(
+        $logTrx_3 = array(
             'trxId' => $idTrx,
             'level' => 3,
             'logDate' => date('Y-m-d'),
-            'statusLog' => 1,
-            'keteranganLog' => 'Permohonan telah diperbaharu dan telah dikirimkan ulang ke Pimpinan '. $data['tujuanPimpinanD']
+            'statusLog' => 0,
+            'keteranganLog' => 'Perubahan lembaran disposisi dan telah dikirimkan kembali ke pimpinan ('. $data['tujuanPimpinanD'] .')'
         );
+        $logTrx_1 = array(
+            'trxId' => $idTrx,
+            'logDate' => date('Y-m-d'),
+            'statusLog' => 1,
+            'keteranganLog' => 'Lembaran disposisi sudah di proses '
+        );
+        switch ($data['tujuanPimpinanD']) {
+            case 'kajati':
+                $logTrx_1['level'] = 1;
+                break;
+            
+            case 'wakajati':
+                $logTrx_1['level'] = 2;
+                break;
+            
+        }
         $this->db->insert('log_trx', $logTrx_1);
         $this->db->where('idDisposisi', $idDisposisi);
         $this->db->update('tb_disposisi', $data);
@@ -134,10 +183,10 @@ class Insert_model extends CI_Model
     function save_disposisi_pimpinan($dataOne,$dataTwo) {
         $logTrx_1 = array(
             'trxId' => $dataTwo['idTrx'],
-            'level' => 2,
+            'level' => 3,
             'logDate' => date('Y-m-d'),
             'statusLog' => 1,
-            'keteranganLog' => 'Disposisi telah diproses oleh pimpinan dan telah dikirimkan ke persuratan'
+            'keteranganLog' => 'Lembaran disposisi telah diterima oleh pimpinan dan sudah diproses'
         );
         $this->db->insert('log_trx', $logTrx_1);
         $this->db->insert('disposisi_detail', $dataOne);
@@ -184,6 +233,20 @@ class Insert_model extends CI_Model
         $dataTwo['ulasanDTrx'] = $pesan;
         $this->db->where('trxId', $idTrx);
         $this->db->update('trx_detail', $dataTwo);
+        return;
+        
+    }
+
+    function updateFinalRespon($idTrx,$data) {
+        $dataUpdate = array(
+            'resOut' => 1,
+            'updateTrxDate' => date('Y-m-d')
+        );
+        $this->db->where('idTrx', $idTrx);
+        $this->db->update('tb_trx', $dataUpdate);
+        
+        $this->db->where('trxId', $idTrx);
+        $this->db->update('trx_detail', $data);
         return;
         
     }

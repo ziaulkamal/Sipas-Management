@@ -61,7 +61,7 @@
 									<?php 
 									$no = 1;
 									foreach ($data as $res) { 
-										if ($this->uri->segment(1) == 'persuratan') { ?>
+										if ($this->uri->segment(1) == 'persuratan' && $res->resOut != 1) { ?>
 									<tr>
 										<td><?= $no++; ?></td>
 										<td><?= $res->nomorDTrx; ?></td>
@@ -82,14 +82,14 @@
 											if ($res->resPersuratan == 1 && $res->resPimpinan == 0) { ?>
 												<a class="badge badge-outline-primary"><i class="fe-corner-right-up"></i> Menunggu Persetujuan</a>
 												<a href="<?= base_url('persuratan/surat/update_document/').$res->idTrx ?>" class="badge badge-outline-warning"><i class="fe-edit"></i> Edit Lembaran Disposisi</a>
-												<a class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
+												<a href="<?= base_url('tracking/surat/').$res->idTrx ?>" target="_blank" class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
 											<?php }elseif ($res->resPersuratan == 0 && $res->resPimpinan == 1) { ?>
 												<a type="button" id="<?= $res->idTrx ?>" class="badge badge-outline-secondary "><i class="fe-x"></i> Ditolak [Lihat ulasan]</a>
 												<a href="<?= base_url('persuratan/surat/update_document/').$res->idTrx ?>" class="badge badge-outline-warning"><i class="fe-edit"></i> Edit Lembaran Disposisi</a>
-												<a class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
+												<a href="<?= base_url('tracking/surat/').$res->idTrx ?>" target="_blank" class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
 											<?php }elseif ($res->resPersuratan == 1 && $res->resPimpinan == 1) { ?>
 												<a type="button" id="final-<?= $res->idTrx ?>" class="badge badge-outline-success"><i class="fe-info"></i> Proses Tujuan Akhir</a>
-												<a class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
+												<a href="<?= base_url('tracking/surat/').$res->idTrx ?>" target="_blank" class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
 											<?php }else { ?>
 												<a href="<?= base_url('persuratan/surat/add_document/').$res->idTrx ?>" class="badge badge-outline-success"><i class="fe-info"></i> Proses Lembaran Disposisi</a>
 											<?php }
@@ -104,7 +104,7 @@
 										</td>
 										<td><?= $res->updateTrxDate; ?></td>
 									</tr>
-									<?php }elseif($this->uri->segment(1) == 'piket') { ?>
+									<?php }elseif($this->uri->segment(1) == 'piket' && $res->resOut != 1) { ?>
 									<tr>
 										<td><?= $no++; ?></td>
 										<td><?= $res->nomorDTrx; ?></td>
@@ -117,7 +117,7 @@
 											<?php switch ($res->resPersuratan) {
 											case '1': ?>
 											<a class="badge badge-outline-info"><i class="fe-info"></i> Dalam Proses</a>
-											<a class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
+												<a href="<?= base_url('tracking/surat/').$res->idTrx ?>" target="_blank" class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
 											<?php break;
 												
 												default: ?>
@@ -133,7 +133,7 @@
 
 										</td>
 									</tr>
-									<?php }elseif($this->uri->segment(1) == 'pimpinan') { 
+									<?php }elseif($this->uri->segment(1) == 'pimpinan' && $res->resOut != 1) { 
 										if ($res->resPersuratan == 1 && $res->resPimpinan == 1 || $res->resPersuratan == 1 && $res->resPimpinan == 0) { ?>
 									<tr>
 										<td><?= $no++; ?></td>
@@ -141,13 +141,18 @@
 										<td><?= strtoupper($res->asalSuratD); ?></td>
 										<td><?= $res->tglPenerimaanD; ?></td>
 										<td><a href="<?= base_url('./public/lampiran/').$res->lampiranDTrx ?>"
-												class="badge badge-outline-blue" target="_blank"><i class="fe-download"></i> Download Berkas</a></td>
+												class="badge badge-outline-blue" target="_blank"><i class="fe-download"></i> Download Berkas</a>
+												<?php if ($res->resPersuratan == 1 && $res->resPimpinan == 1) { ?>
+													<a href="<?= base_url('disposisi/excel/download/').$res->idTrx ?>"
+												class="badge badge-outline-blue"><i class="fe-download"></i> Download Lembar Disposisi</a>
+												<?php } ?>
+											</td>
 										<!-- <td><?= $res->updateTrxDate; ?></td> -->
 										<td>
 											<?php switch ($res->resPimpinan) {
 											case '1': ?>
 											<a class="badge badge-outline-info"><i class="fe-info"></i> Dalam Proses</a>
-											<a class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
+												<a href="<?= base_url('tracking/surat/').$res->idTrx ?>" target="_blank" class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
 											<?php break;
 												
 												default: ?>

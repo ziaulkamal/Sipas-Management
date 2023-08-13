@@ -61,12 +61,10 @@ class View_controller extends CI_Controller {
     }
 
     function pimpinan_view() {
-        // $pimpinan = $this->session->userdata('isPimpinan');
-
-        $pimpinan = 'kajati';
+        $pimpinan = $this->session->userdata('isPimpinan');
         $load = $this->views->getAllDisposisi_byLevel($pimpinan)->result();
         $data = array(
-            'title' => 'Berkas Masuk',
+            'title' => 'Berkas Masuk [ '. strtoupper($pimpinan) . ' ]',
             'titlePage' => 'Daftar Berkas Masuk',
             'data' => $load,
             'table' => true,
@@ -77,6 +75,16 @@ class View_controller extends CI_Controller {
         $this->load->view('index', $data);
     }
 
+    function trackingLog($idTrx) {
+        $load = $this->views->getLogById($idTrx)->result();
+        $data = array(
+            'title' => 'Lacak Dokumen : [' . $idTrx.']',
+            'titlePage' => 'Lacak Dokumen : [' . $idTrx.']',
+            'data'  => $load,
+            'page' => 'page/piket/track_berkas',
+        );
+        $this->load->view('index', $data);  
+    }
 
 
 
