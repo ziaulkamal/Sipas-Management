@@ -81,6 +81,28 @@ class View_model extends CI_Model
         // $this->db->order_by('tb_trx.tglSuratMasuk', 'desc');       
         return $this->db->get('tb_trx');
     }
+
+    function getActiveSheet($idTrx) {
+        $this->db->join('trx_detail', 'trx_detail.trxId = tb_trx.idTrx');
+        $this->db->join('tb_disposisi', 'tb_disposisi.trxId = trx_detail.trxId');
+        $this->db->join('disposisi_detail', 'disposisi_detail.disposisiId = tb_disposisi.idDisposisi');
+        $this->db->where('tb_trx.idTrx', $idTrx);
+        return $this->db->get('tb_trx')->row_array();
+    }
+
+    function getLogTrx($levelAccess) {
+        $this->db->where('statusLog', 1);
+        $this->db->where('level', $levelAccess);
+        return $this->db->get('log_trx');
+        
+    }
+
+    function replaceAllLogStatus($levelAccess) {
+        $data['statusLog'] = 0;
+        $this->db->where('level', $levelAccess);
+        return $this->db->update('log_trx', $data);
+        
+    }
 }
 
 

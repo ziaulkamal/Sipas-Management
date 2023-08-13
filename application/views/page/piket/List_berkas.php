@@ -72,7 +72,7 @@
 										<td><a href="<?= base_url('./public/lampiran/').$res->lampiranDTrx ?>"
 												class="badge badge-outline-blue" target="_blank"><i class="fe-download"></i> Download Berkas</a>
 												<?php if ($res->resPersuratan == 1 && $res->resPimpinan == 1) { ?>
-													<a href="<?= base_url('./public/lampiran/').$res->lampiranDTrx ?>"
+													<a href="<?= base_url('disposisi/excel/download/').$res->idTrx ?>"
 												class="badge badge-outline-blue"><i class="fe-download"></i> Download Lembar Disposisi</a>
 												<?php } ?>
 											</td>
@@ -88,7 +88,7 @@
 												<a href="<?= base_url('persuratan/surat/update_document/').$res->idTrx ?>" class="badge badge-outline-warning"><i class="fe-edit"></i> Edit Lembaran Disposisi</a>
 												<a class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
 											<?php }elseif ($res->resPersuratan == 1 && $res->resPimpinan == 1) { ?>
-												<a href="<?= base_url('persuratan/surat/update_document/').$res->idTrx ?>" class="badge badge-outline-success"><i class="fe-info"></i> Proses Tujuan Akhir</a>
+												<a type="button" id="final-<?= $res->idTrx ?>" class="badge badge-outline-success"><i class="fe-info"></i> Proses Tujuan Akhir</a>
 												<a class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
 											<?php }else { ?>
 												<a href="<?= base_url('persuratan/surat/add_document/').$res->idTrx ?>" class="badge badge-outline-success"><i class="fe-info"></i> Proses Lembaran Disposisi</a>

@@ -16,10 +16,10 @@ class Insert_model extends CI_Model
     function save_surat($genTrx,$dataOne, $dataTwo) {
         $logTrx = array(
             'trxId' => $genTrx,
-            'level' => 4,
+            'level' => 3,
             'logDate' => date('Y-m-d'),
             'statusLog' => 1,
-            'keteranganLog' => 'Surat Terkirim ke Persuratan'
+            'keteranganLog' => 'Surat Nomor '. $dataTwo['nomorDTrx'] . ' Dengan Judul '. $dataOne['judulSurat'] .'Baru Saja Masuk dari Piket'
         );
         $this->db->insert('log_trx', $logTrx);
         $this->db->insert('tb_trx', $dataOne);
@@ -39,7 +39,7 @@ class Insert_model extends CI_Model
     function update_surat($idTrx,$dataOne,$dataTwo) {
         $logTrx = array(
             'trxId' => $idTrx,
-            'level' => 4,
+            'level' => 3,
             'logDate' => date('Y-m-d'),
             'statusLog' => 1,
             'keteranganLog' => 'Surat Telah Diperbahrui dan dikirim kembali ke Persuratan'

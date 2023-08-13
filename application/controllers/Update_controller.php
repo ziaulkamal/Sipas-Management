@@ -9,7 +9,12 @@ class Update_controller extends CI_Controller {
         $this->load->model('View_model','get');
         $this->load->model('Insert_model','upd');
         
-        
+        $this->load->model('View_model','views');    
+                $dataNotice = array(
+            'put' =>  $this->notification->push(),
+
+        );
+        $this->session->set_userdata( $dataNotice);
     }
 
 
@@ -229,10 +234,10 @@ class Update_controller extends CI_Controller {
         $dataTwo = array();
         $postData = $this->input->post();
 
-        $checkboxesToCheck = array('A17', 'A18', 'A19', 'A20', 'A21', 'A22', 'A23', 'A24', 'A25', 'A26', 'A27', 'A28', 'A29', 'A30', 'A31', 'A32', 'A33', 'A34', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25', 'F26', 'F28', 'F29', 'F27', 'F30', 'F31', 'F32', 'F34', 'L38');
+        $checkboxesToCheck = array('A17', 'A18', 'A19', 'A20', 'A21', 'A22', 'A23', 'A24', 'A25', 'A26', 'A27', 'A28', 'A29', 'A30', 'A31', 'A32', 'A33', 'A34', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25', 'F26', 'F28', 'F29', 'F27', 'F30', 'F31', 'F32', 'F34','L38');
 
         // Daftar checkbox extends_
-        $extendedCheckboxes = array('extends_F25', 'extends_F26', 'extends_F28', 'extends_F29', 'extends_F32', 'extends_F34', 'extends_L38');
+        $extendedCheckboxes = array('extends_F25', 'extends_F26', 'extends_F28', 'extends_F29', 'extends_F32', 'extends_F34','extends_L38');
 
         foreach ($postData as $name => $value) {
             if (in_array($name, $checkboxesToCheck) || in_array($name, $extendedCheckboxes)) {
@@ -297,12 +302,17 @@ class Update_controller extends CI_Controller {
                     # code...
                     break;
             }
-            $protectOutput = ['L17', 'L19', 'L21', 'L23', 'L25', 'L27', 'L30', 'L32', 'L34', 'L36', 'L38'];
+            $protectOutput = ['L17', 'L19', 'L21', 'L23', 'L25', 'L27', 'L30', 'L32', 'L34', 'L36','L38'];
 
             if (array_reduce($protectOutput, function($carry, $input) {
                 return $carry || !empty($this->input->post($input));
             }, false)) {
                 $dataOne['disposisiId'] = $this->input->post('idDisposisi');
+                
+                // echo "<pre>";
+                // print_r ($dataOne);
+                // echo "</pre>";
+                // die();
                 $this->upd->save_disposisi_pimpinan($dataOne,$dataTwo);
                 $this->session->set_flashdata('success', 'Dokumen berhasil di proses dan sudah dikirimkan ke persuratan !');
                 redirect('pimpinan/surat/listing/','refresh');
@@ -325,6 +335,9 @@ class Update_controller extends CI_Controller {
     }
 
 
+    function final_result($idTrx) {
+        
+    }
 
 
 
