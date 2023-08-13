@@ -61,8 +61,6 @@ class View_model extends CI_Model
             $this->db->where('user', $user);
             $this->db->limit(1);
             return $this->db->get('tb_auth');
-        } else {
-            return;
         }
     }
 
@@ -96,12 +94,18 @@ class View_model extends CI_Model
         return $this->db->get('log_trx');
         
     }
-
+    
     function replaceAllLogStatus($levelAccess) {
         $data['statusLog'] = 0;
         $this->db->where('level', $levelAccess);
         return $this->db->update('log_trx', $data);
         
+    }
+
+    function getLogById($idTrx) {
+        $this->db->where('trxId', $idTrx);
+        $this->db->order_by('idLog', 'desc');
+        return $this->db->get('log_trx');
     }
 }
 

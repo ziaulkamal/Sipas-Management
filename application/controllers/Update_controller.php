@@ -336,6 +336,11 @@ class Update_controller extends CI_Controller {
 
 
     function final_result($idTrx) {
+        $data['ulasanDTrx'] = 'Tujuan akhir : '. $this->input->post('respon');
+        $this->upd->updateFinalRespon($idTrx,$data);
+        $this->session->set_flashdata('message', 'Proses telah selesai');
+        
+        redirect('/','refresh');
         
     }
 

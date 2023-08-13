@@ -34,6 +34,41 @@ class Dashboard extends CI_Controller {
 
         
     }
+
+    public function followNotification() {
+        $levelAccess = $this->session->userdata('level');
+        $this->v->replaceAllLogStatus($levelAccess);   
+        switch ($levelAccess) {
+            case '1':
+                $this->session->set_flashdata('message', 'Selamat Datang Kajati ! Silahkan proses dokumen yang tersedia .');
+                
+                redirect('pimpinan/surat/listing','refresh');
+                
+                break;
+            case '2':
+                $this->session->set_flashdata('message', 'Selamat Datang Wakajati ! Silahkan proses dokumen yang tersedia .');
+                
+                redirect('pimpinan/surat/listing','refresh');
+                
+                break;
+            case '3':
+                $this->session->set_flashdata('message', 'Selamat Datang Petugas Persuratan ! Silahkan proses dokumen yang tersedia .');
+                
+                redirect('pimpinan/surat/listing','refresh');
+                
+                break;
+            case '3':
+                $this->session->set_flashdata('message', 'Selamat Datang Petugas Piket ! Silahkan lihat dokumen yang sudah diproses .');
+                
+                redirect('pimpinan/surat/listing','refresh');
+                
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+    }
 }
 
 /* End of file Dashboard.php and path \application\controllers\Dashboard.php */

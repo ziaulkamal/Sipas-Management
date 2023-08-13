@@ -25,7 +25,7 @@
                                         case '4':
                                             foreach ($this->session->userdata('put')->result() as $notif) {
                                             if ($notif->level == 4) { ?>
-                                            <a href="#"
+                                            <a href="<?= base_url('follow') ?>"
                                                 class="dropdown-item p-0 notify-item card unread-noti shadow-none mb-1">
                                                     <div class="card-body">
                                                         <span class="float-end noti-close-btn text-muted"><i
@@ -49,7 +49,57 @@
                                         case '3':
                                             foreach ($this->session->userdata('put')->result() as $notif) {
                                             if ($notif->level == 3) { ?>
-                                            <a href="#"
+                                            <a href="<?= base_url('follow') ?>"
+                                                class="dropdown-item p-0 notify-item card unread-noti shadow-none mb-1">
+                                                    <div class="card-body">
+                                                        <span class="float-end noti-close-btn text-muted"><i
+                                                                class="mdi mdi-close"></i></span>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="flex-shrink-0">
+                                                                <div class="notify-icon bg-primary">
+                                                                    <i class="mdi mdi-comment-account-outline"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-grow-1 text-truncate ms-2">
+                                                                <h5 class="noti-item-title fw-semibold font-14"><?= $notif->keteranganLog ?> <small
+                                                                        class="fw-normal text-muted ms-1"></small></h5>
+                                                                <small class="noti-item-subtitle text-muted"></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <?php }}
+                                            break;
+                                        
+                                        case '2':
+                                            foreach ($this->session->userdata('put')->result() as $notif) {
+                                            if ($notif->level == 2) { ?>
+                                            <a href="<?= base_url('follow') ?>"
+                                                class="dropdown-item p-0 notify-item card unread-noti shadow-none mb-1">
+                                                    <div class="card-body">
+                                                        <span class="float-end noti-close-btn text-muted"><i
+                                                                class="mdi mdi-close"></i></span>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="flex-shrink-0">
+                                                                <div class="notify-icon bg-primary">
+                                                                    <i class="mdi mdi-comment-account-outline"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-grow-1 text-truncate ms-2">
+                                                                <h5 class="noti-item-title fw-semibold font-14"><?= $notif->keteranganLog ?> <small
+                                                                        class="fw-normal text-muted ms-1"></small></h5>
+                                                                <small class="noti-item-subtitle text-muted"></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <?php }}
+                                            break;
+                                        
+                                        case '2':
+                                            foreach ($this->session->userdata('put')->result() as $notif) {
+                                            if ($notif->level == 1) { ?>
+                                            <a href="<?= base_url('follow') ?>"
                                                 class="dropdown-item p-0 notify-item card unread-noti shadow-none mb-1">
                                                     <div class="card-body">
                                                         <span class="float-end noti-close-btn text-muted"><i

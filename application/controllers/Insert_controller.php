@@ -127,12 +127,15 @@ class Insert_controller extends CI_Controller {
                 'nama'         => $this->input->post('nama', TRUE),
                 'user'         => strtolower($this->input->post('user', TRUE)),
                 'pass'         => password_hash($pass, PASSWORD_DEFAULT),
-                'level'        => $this->input->post('level', TRUE),
                 'regisDate'    => date('Y-m-d'),
                 
             );
-            if ($this->input->post('level') == 2) {
+            if ($this->input->post('level') == 2 && $this->input->post('subLevel') == 'kajati') {
                 $data['isPimpinan'] = $this->input->post('subLevel');
+                $data['level'] = 1;
+            }elseif ($this->input->post('level') == 2 && $this->input->post('subLevel') == 'wakajati') {
+                $data['isPimpinan'] = $this->input->post('subLevel');
+                $data['level'] = 2;
             }
 
             $this->session->set_flashdata('success', 'Data petugas berhasil ditambahkan!');
@@ -159,8 +162,8 @@ class Insert_controller extends CI_Controller {
         $pass = $this->input->post('pass', TRUE);
         
         $validasi = $this->views->login($user, $pass);
-        
-        if ($validasi->num_rows() == 1) {
+     
+        if ($validasi != NULL && $validasi->num_rows() >= 0 && $validasi->num_rows() <= 2) {
             $data = $validasi->row_array();
             switch ($data['level']) {
                 case '1':
@@ -169,7 +172,8 @@ class Insert_controller extends CI_Controller {
                         'nama' => $data['nama'],
                         'user' => $data['user'],
                         'pass' => $data['pass'],
-                        'level' => '1'
+                        'level' => '1',
+                        'isPimpinan' => $data['isPimpinan']
                     ));
                     redirect('Dashboard');
                     break;
@@ -235,7 +239,7 @@ class Insert_controller extends CI_Controller {
     function _rules($validasi) {
         switch ($validasi) {
             case 'piket':
-                $this->form_validation->set_rules('nomor_surat', 'Nomor Surat', 'trim|required|min_length[5]|max_length[10]',array(
+                $this->form_validation->set_rules('nomor_surat', 'Nomor Surat', 'trim|required|min_length[5]|max_length[30]',array(
                     'required' => '%s wajib di isi !',
                     'min_length' => '%s terlalu pendek !',
                     'max_length' => '%s terlalu panjang !',

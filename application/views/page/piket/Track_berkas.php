@@ -10,7 +10,7 @@
 					<div class="page-title-right">
 						<?php $this->load->view('partials/breadcrumb'); ?>
 					</div>
-                    <h4 class="page-title"><?= $titlePage ?></h4>
+                    <!-- <h4 class="page-title"><?= $titlePage ?></h4> -->
 				</div>
 			</div>
 		</div>
@@ -24,39 +24,29 @@
 				<div class="card">
 					<div class="card-body">
 						<h5 class="mb-4 text-uppercase"><i class="mdi mdi-google-maps me-1"></i>
-							Tracking Surat</h5>
+							<?= $titlePage ?></h5>
 
 						<ul class="list-unstyled timeline-sm">
+							<?php foreach ($data as $track) { ?>
 							<li class="timeline-sm-item">
-								<span class="timeline-sm-date">2023-07-02</span>
-								<h5 class="mt-0 mb-1">Piket</h5>
-								<p>Surat berada di piket</p>
+								<span class="timeline-sm-date"><?= $track->logDate ?></span>
+								<h5 class="mt-0 mb-1"><?php switch ($track->level) {
+									case '1':
+										echo "Kajati";
+										break;
+									case '2':
+										echo "Wakajati";
+										break;
+									case '3':
+										echo "Persuratan";
+										break;
+									case '4':
+										echo "Piket";
+										break;
+								}?></h5>
+								<p><?= $track->keteranganLog ?></p>
 							</li>
-							<li class="timeline-sm-item">
-								<span class="timeline-sm-date">2023-07-02</span>
-								<h5 class="mt-0 mb-1">Persuratan</h5>
-								<p>Surat telah di terima</p>
-							</li>
-							<li class="timeline-sm-item">
-								<span class="timeline-sm-date">2023-07-02</span>
-								<h5 class="mt-0 mb-1">Persuratan</h5>
-								<p>Surat telah di kirimkan ke pimpinan</p>
-							</li>
-							<li class="timeline-sm-item">
-								<span class="timeline-sm-date">2023-07-02</span>
-								<h5 class="mt-0 mb-1">Pimpinan</h5>
-								<p>Surat telah sampai di pimpinan</p>
-							</li>
-							<li class="timeline-sm-item">
-								<span class="timeline-sm-date">2023-07-02</span>
-								<h5 class="mt-0 mb-1">Persuratan</h5>
-								<p>Surat telah di kembalikan ke persuratan</p>
-							</li>
-							<li class="timeline-sm-item">
-								<span class="timeline-sm-date">2023-07-02</span>
-								<h5 class="mt-0 mb-1">Persuratan</h5>
-								<p>Surat telah di teruskan ke Intel</p>
-							</li>
+							<?php }?>
 						</ul>
 
 					</div>
