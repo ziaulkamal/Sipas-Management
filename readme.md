@@ -53,6 +53,13 @@ Ready to dive into the world of efficient tracking and management? Follow these 
 4. Stay updated with real-time notifications for activities.
 
 
+## Contributors
+
+A big thank you to our valuable contributors who have helped shape SIPAS Management:
+
+- [Ziaul Kamal](https://github.com/ziaulkamal)
+- [Rijalul Akhri](https://github.com/rijalulakhri-dev)
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
@@ -60,5 +67,3 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 Join us in simplifying your administrative tasks with SIPAS Management. Let's make tracking letters and activities a delightful experience! 💌📊
-
-Have questions or suggestions? Contact us at support@sipasmanagement.com or visit our website [www.sipasmanagement.com](https://www.sipasmanagement.com). We'd love to hear from you! 😊🚀
