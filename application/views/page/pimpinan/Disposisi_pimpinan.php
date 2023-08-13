@@ -263,7 +263,7 @@
 										<label class="form-check-label" for="">Koordinator</label>
 									</div>
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" id="extends_F38" name="L38">
+										<input class="form-check-input" type="checkbox" id="extends_L38" name="L38">
 										<label class="form-check-label" for="">Lainya........</label>
                                     </div>
                                 </div>
