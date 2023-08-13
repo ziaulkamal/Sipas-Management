@@ -2,7 +2,7 @@
 
 Welcome to SIPAS Management, your ultimate solution for seamless letter and activity tracking! 🚀
 
-![SIPAS Management Banner](link_to_banner_image)
+![SIPAS Management Banner](https://i.pinimg.com/1200x/bc/ce/f3/bccef3acf376bba141d56eb0d8fcfc09.jpg)
 
 ## Table of Contents
 
@@ -52,17 +52,6 @@ Ready to dive into the world of efficient tracking and management? Follow these 
 3. Utilize search and filter options to locate specific information.
 4. Stay updated with real-time notifications for activities.
 
-## Contributing
-
-We welcome contributions from the open-source community! To contribute to SIPAS Management, follow these steps:
-
-1. Fork the repository.
-2. Create a new branch: `git checkout -b feature/my-feature`
-3. Make your enhancements and fixes.
-4. Test thoroughly.
-5. Commit your changes: `git commit -m "Added a fantastic feature"`
-6. Push to the branch: `git push origin feature/my-feature`
-7. Open a pull request!
 
 ## License
 
