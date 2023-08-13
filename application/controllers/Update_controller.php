@@ -9,7 +9,12 @@ class Update_controller extends CI_Controller {
         $this->load->model('View_model','get');
         $this->load->model('Insert_model','upd');
         
-        
+        $this->load->model('View_model','views');    
+                $dataNotice = array(
+            'put' =>  $this->notification->push(),
+
+        );
+        $this->session->set_userdata( $dataNotice);
     }
 
 

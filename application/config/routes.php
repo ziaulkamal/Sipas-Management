@@ -48,6 +48,9 @@ $route['disposisi/excel/download/(:any)'] = 'Generate_controller/excel_process/$
 
 // end pimpinan 
 
+//Pull Notif 
+$route['pull_notifications'] = 'Dashboard/pull_notifications';
+
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

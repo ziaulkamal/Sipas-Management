@@ -89,6 +89,20 @@ class View_model extends CI_Model
         $this->db->where('tb_trx.idTrx', $idTrx);
         return $this->db->get('tb_trx')->row_array();
     }
+
+    function getLogTrx($levelAccess) {
+        $this->db->where('statusLog', 1);
+        $this->db->where('level', $levelAccess);
+        return $this->db->get('log_trx');
+        
+    }
+
+    function replaceAllLogStatus($levelAccess) {
+        $data['statusLog'] = 0;
+        $this->db->where('level', $levelAccess);
+        return $this->db->update('log_trx', $data);
+        
+    }
 }
 
 

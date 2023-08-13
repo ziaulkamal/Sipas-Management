@@ -8,6 +8,12 @@ class Insert_controller extends CI_Controller {
         parent::__construct();
         $this->load->model('Insert_model','ins');
         $this->load->model('View_model','views');
+        // $this->load->model('View_model','views');    
+        $dataNotice = array(
+            'put' =>  $this->notification->push(),
+
+        );
+        $this->session->set_userdata( $dataNotice);
         
     }
 

@@ -6,12 +6,22 @@ class View_controller extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('View_model','views');
+        $this->load->model('View_model','views');    
+                $dataNotice = array(
+            'put' =>  $this->notification->push(),
+
+        );
+        $this->session->set_userdata( $dataNotice);
+           
         
     }
 
     public function piket_view()
     {
+        // Menggunakan library Notification
+
+
+        
         $load = $this->views->getListSurat()->result();
         $data = array(
             'title' => 'Daftar Berkas',
@@ -19,6 +29,7 @@ class View_controller extends CI_Controller {
             'data'  => $load,
             'table' => true,
             'page' => 'page/piket/list_berkas',
+
         );
         $this->load->view('index', $data);
     }
@@ -51,7 +62,7 @@ class View_controller extends CI_Controller {
 
     function pimpinan_view() {
         // $pimpinan = $this->session->userdata('isPimpinan');
-        
+
         $pimpinan = 'kajati';
         $load = $this->views->getAllDisposisi_byLevel($pimpinan)->result();
         $data = array(
