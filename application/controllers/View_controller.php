@@ -38,15 +38,21 @@ class View_controller extends CI_Controller {
     function user_view()
     {
         $load = $this->views->getAllUser()->result();
-        $data = array(
-            'title' => 'Daftar User',
-            'titlePage' => 'Daftar User',
-            'data' => $load,
-            'table' => true,
-            'page' => 'page/petugas/list_petugas'
-        );
+        if ($this->session->userdata('masuk') == TRUE && $this->session->userdata('level') == 1) {
+            $data = array(
+                'title' => 'Daftar User',
+                'titlePage' => 'Daftar User',
+                'data' => $load,
+                'table' => true,
+                'page' => 'page/petugas/list_petugas'
+            );
+    
+            $this->load->view('index', $data);
+        }else {
+            $this->session->sess_destroy();
+            redirect('login');
+        }
 
-        $this->load->view('index', $data);
     }
 
     function pimpinan_view() {

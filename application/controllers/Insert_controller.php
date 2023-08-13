@@ -99,13 +99,19 @@ class Insert_controller extends CI_Controller {
      */
     function create_user() 
     {
-        $data = array(
-            'title'     => 'Daftar Petugas',
-            'titlePage' => 'Daftar Petugas',
-            'page'      => 'page/petugas/Daftar_petugas',
-            'action'    => 'admin/go/process'
-        );
-        $this->load->view('index', $data);    
+        if ($this->session->userdata('masuk') == TRUE && 
+        $this->session->userdata('level') == 1) {
+            $data = array(
+                'title'     => 'Daftar Petugas',
+                'titlePage' => 'Daftar Petugas',
+                'page'      => 'page/petugas/Daftar_petugas',
+                'action'    => 'admin/go/process'
+            );
+            $this->load->view('index', $data);    
+        } else {
+            $this->session->sess_destroy();
+            redirect('login');
+        }
     }
 
     function process_create_user() 
@@ -132,7 +138,7 @@ class Insert_controller extends CI_Controller {
             $this->session->set_flashdata('success', 'Data petugas berhasil ditambahkan!');
             $this->ins->insert_user($data);
             
-            redirect('daftar_petugas');
+            redirect('admin/user/listing');
         }
     }
 
