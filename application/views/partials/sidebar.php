@@ -37,42 +37,46 @@
            				</a>
            				<div class="collapse" id="menuSurat">
            					<ul class="sub-menu">
+								<?php if ($this->session->userdata('level') == 4 || $this->session->userdata('level') == 1) { ?>
            						<li class="menu-item">
            							<a href="<?= base_url('piket/surat/add_document') ?>" class="menu-link">
            								<span class="menu-text">Masukan Permohonan</span>
            							</a>
            						</li>
+								<?php } ?>
+
+								<?php if ($this->session->userdata('level') == 4) { ?>
            						<li class="menu-item">
-           							<a href="<?= base_url('create_surat') ?>" class="menu-link">
-           								<span class="menu-text">Buat Surat</span>
-           							</a>
-           						</li>
-								   <?php if ($this->session->userdata('level') != 4) { ?>
-           						<li class="menu-item">
-           							<a href="<?= base_url('lembar_disposisi') ?>" class="menu-link">
-           								<span class="menu-text">Buat Lembar Disposisi</span>
-           							</a>
-           						</li>
-								<?php }?>
-           						<li class="menu-item">
-           							<a href="<?= base_url('list_surat') ?>" class="menu-link">
+           							<a href="<?= base_url('piket/surat/listing') ?>" class="menu-link">
            								<span class="menu-text">Daftar Surat</span>
            							</a>
            						</li>
+								<?php } ?>
+
+								<?php if ($this->session->userdata('level') == 3 || $this->session->userdata('level') == 1) { ?>
            						<li class="menu-item">
-           							<a href="#" class="menu-link">
-           								<span class="menu-text">Surat Selesai</span>
+           							<a href="<?= base_url('persuratan/surat/listing') ?>" class="menu-link">
+           								<span class="menu-text">Daftar Surat</span>
            							</a>
            						</li>
+								<?php } ?>
+
+								<?php if ($this->session->userdata('level') == 2) { ?>
+           						<li class="menu-item">
+           							<a href="<?= base_url('pimpinan/surat/listing') ?>" class="menu-link">
+           								<span class="menu-text">Daftar Surat</span>
+           							</a>
+           						</li>
+								<?php } ?>
            					</ul>
            				</div>
            			</li>
 
 					<?php if ($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2 || $this->session->userdata('level') == 3) { ?>
 					<li class="menu-item">
-           				<a href="<?= base_url('laporan') ?>" class="menu-link">
+           				<a href="<?= base_url('') ?>" class="menu-link">
            					<span class="menu-icon"><i class="fe-book"></i></span>
-           					<span class="menu-text"> Laporan </span>
+           					<span class="menu-text"> Surat Selesai </span>
            				</a>
            			</li>
 					<?php } ?>
@@ -86,13 +90,13 @@
                             <div class="collapse" id="menuCrm">
                                 <ul class="sub-menu">
                                     <li class="menu-item">
-                                        <a href="<?= base_url('daftar_petugas') ?>" class="menu-link">
+                                        <a href="<?= base_url('admin/user/listing') ?>" class="menu-link">
                                             <span class="menu-text">Daftar Petugas</span>
                                         </a>
                                     </li>
                                     <li class="menu-item">
-                                        <a href="<?= base_url('list_petugas') ?>" class="menu-link">
-                                            <span class="menu-text">List Petugas</span>
+                                        <a href="<?= base_url('admin/create_user') ?>" class="menu-link">
+                                            <span class="menu-text">Tambah Petugas</span>
                                         </a>
                                     </li>
                                 </ul>

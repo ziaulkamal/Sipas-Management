@@ -29,28 +29,26 @@
 										<th>No</th>
 										<th data-toggle="true">Nama</th>
 										<th>Username</th>
-										<th data-hide="phone, tablet">Status</th>
 										<th data-hide="phone, tablet">Level Akses</th>
 										<th data-hide="phone, tablet">Terdaftar</th>
-										<th data-hide="phone, tablet">Opsi Lainnya</th>
+										<th data-hide="phone, tablet">Aksi</th>
 									</tr>
 								</thead>
 								<tbody>
                                     <?php 
 
                                     $no = 1;
-                                    foreach ($petugas as $data) {
+                                    foreach ($data as $petugas) {
                                     ?>
 									<tr>
 										<td class="fw-bolder"><?= $no++ ?></td>
-										<td class="fw-bolder"><?= $data->nama ?></td>
-										<td class="fw-bolder"><?= $data->username ?></td>
-										<td><span class="badge label-table bg-primary"><?= $data->status ?></span></td>
-										<td class="fw-bolder"><?= $data->level_access ?></td>
-										<td class="fw-bolder"><?= $data->terdaftar ?></td>
+										<td class="fw-bolder"><?= $petugas->nama ?></td>
+										<td class="fw-bolder"><?= $petugas->user ?></td>
+										<td class="fw-bolder"><?= $petugas->level ?></td>
+										<td class="fw-bolder"><?= $petugas->regisDate ?></td>
 										<td>
-											<a href="<?= base_url('update_petugas/' . $data->id_user)?>"><span class="badge label-table bg-success">Edit</span></a>
-											<a href="<?= base_url('delete/' . $data->id_user)?>" class="badge label-table bg-danger tombol-hapus">Hapus</a>
+											<a href="<?= base_url('update_petugas/' . $petugas->idAuth)?>"><span class="badge label-table bg-success">Edit</span></a>
+											<a href="<?= base_url('delete/' . $petugas->idAuth)?>" class="badge label-table bg-danger tombol-hapus">Hapus</a>
 										</td>
 									</tr>
                                     <?php } ?>
