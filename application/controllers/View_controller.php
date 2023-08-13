@@ -7,7 +7,8 @@ class View_controller extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('View_model','views');    
-                $dataNotice = array(
+        $this->load->helper('tgl_indo');
+        $dataNotice = array(
             'put' =>  $this->notification->push(),
 
         );

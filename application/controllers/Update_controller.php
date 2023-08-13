@@ -8,6 +8,7 @@ class Update_controller extends CI_Controller {
         parent::__construct();
         $this->load->model('View_model','get');
         $this->load->model('Insert_model','upd');
+        $this->load->helper('tgl_indo');
         
         $this->load->model('View_model','views');    
                 $dataNotice = array(

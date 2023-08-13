@@ -68,7 +68,7 @@
 										<td><?= $res->judulSurat; ?></td>
 
 
-										<td><?= $res->tglSuratMasuk; ?></td>
+										<td><?= date_indo($res->tglSuratMasuk); ?></td>
 										<td><a href="<?= base_url('./public/lampiran/').$res->lampiranDTrx ?>"
 												class="badge badge-outline-blue" target="_blank"><i class="fe-download"></i> Download Berkas</a>
 												<?php if ($res->resPersuratan == 1 && $res->resPimpinan == 1) { ?>
@@ -102,7 +102,7 @@
 
 
 										</td>
-										<td><?= $res->updateTrxDate; ?></td>
+										<td><?= date_indo($res->updateTrxDate); ?></td>
 									</tr>
 									<?php }elseif($this->uri->segment(1) == 'piket' && $res->resOut != 1) { ?>
 									<tr>
@@ -111,7 +111,7 @@
 										<td><?= $res->judulSurat; ?></td>
 
 
-										<td><?= $res->tglSuratMasuk; ?></td>
+										<td><?= longdate_indo($res->tglSuratMasuk); ?></td>
 										<!-- <td><?= $res->updateTrxDate; ?></td> -->
 										<td>
 											<?php switch ($res->resPersuratan) {
@@ -139,7 +139,7 @@
 										<td><?= $no++; ?></td>
 										<td><?= strtoupper($res->tingkatKeamananD); ?></td>
 										<td><?= strtoupper($res->asalSuratD); ?></td>
-										<td><?= $res->tglPenerimaanD; ?></td>
+										<td><?= date_indo($res->tglPenerimaanD); ?></td>
 										<td><a href="<?= base_url('./public/lampiran/').$res->lampiranDTrx ?>"
 												class="badge badge-outline-blue" target="_blank"><i class="fe-download"></i> Download Berkas</a>
 												<?php if ($res->resPersuratan == 1 && $res->resPimpinan == 1) { ?>
