@@ -43,6 +43,8 @@ $route['pimpinan/reject/surat/(:any)'] = 'Update_controller/update_penolakan/$1'
 $route['pimpinan/surat/add_document/(:any)'] = 'Update_controller/add_disposisi_pimpinan/$1';
 $route['pimpinan/go/prog_update_disposisi_pimpinan'] = 'Update_controller/prog_update_disposisi_pimpinan';
 
+$route['disposisi/excel/download/(:any)'] = 'Generate_controller/excel_process/$1';
+
 
 // end pimpinan 
 
