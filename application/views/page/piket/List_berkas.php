@@ -49,7 +49,7 @@
 										<th>Kode</th>
 										<th>Asal Surat</th>
 										<th>Tanggal Penyelesaian</th>
-										<th>Rincian </th>
+										<th>Dokumen Berkas </th>
 										<!-- <th>Tanggal Update System</th> -->
 										<th>Status Surat</th>
 									</tr>
@@ -70,17 +70,25 @@
 
 										<td><?= $res->tglSuratMasuk; ?></td>
 										<td><a href="<?= base_url('./public/lampiran/').$res->lampiranDTrx ?>"
-												class="badge badge-outline-blue"><i class="fe-download"></i> Download Berkas</a></td>
+												class="badge badge-outline-blue" target="_blank"><i class="fe-download"></i> Download Berkas</a>
+												<?php if ($res->resPersuratan == 1 && $res->resPimpinan == 1) { ?>
+													<a href="<?= base_url('./public/lampiran/').$res->lampiranDTrx ?>"
+												class="badge badge-outline-blue"><i class="fe-download"></i> Download Lembar Disposisi</a>
+												<?php } ?>
+											</td>
 										<td>
 
 										<?php 
-											if ($res->resPersuratan == 1) { ?>
+											if ($res->resPersuratan == 1 && $res->resPimpinan == 0) { ?>
 												<a class="badge badge-outline-primary"><i class="fe-corner-right-up"></i> Menunggu Persetujuan</a>
 												<a href="<?= base_url('persuratan/surat/update_document/').$res->idTrx ?>" class="badge badge-outline-warning"><i class="fe-edit"></i> Edit Lembaran Disposisi</a>
 												<a class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
 											<?php }elseif ($res->resPersuratan == 0 && $res->resPimpinan == 1) { ?>
 												<a type="button" id="<?= $res->idTrx ?>" class="badge badge-outline-secondary "><i class="fe-x"></i> Ditolak [Lihat ulasan]</a>
 												<a href="<?= base_url('persuratan/surat/update_document/').$res->idTrx ?>" class="badge badge-outline-warning"><i class="fe-edit"></i> Edit Lembaran Disposisi</a>
+												<a class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
+											<?php }elseif ($res->resPersuratan == 1 && $res->resPimpinan == 1) { ?>
+												<a href="<?= base_url('persuratan/surat/update_document/').$res->idTrx ?>" class="badge badge-outline-success"><i class="fe-info"></i> Proses Tujuan Akhir</a>
 												<a class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
 											<?php }else { ?>
 												<a href="<?= base_url('persuratan/surat/add_document/').$res->idTrx ?>" class="badge badge-outline-success"><i class="fe-info"></i> Proses Lembaran Disposisi</a>
@@ -132,7 +140,8 @@
 										<td><?= strtoupper($res->tingkatKeamananD); ?></td>
 										<td><?= strtoupper($res->asalSuratD); ?></td>
 										<td><?= $res->tglPenerimaanD; ?></td>
-										<td><a class="badge badge-outline-info"><i class="fe-info"></i> Lihat</a></td>
+										<td><a href="<?= base_url('./public/lampiran/').$res->lampiranDTrx ?>"
+												class="badge badge-outline-blue" target="_blank"><i class="fe-download"></i> Download Berkas</a></td>
 										<!-- <td><?= $res->updateTrxDate; ?></td> -->
 										<td>
 											<?php switch ($res->resPimpinan) {

@@ -107,8 +107,8 @@ class Update_controller extends CI_Controller {
     }
 
     function update_penolakan($idTrx) {
-        // $pimpinan = $this->session->userdata('isPimpinan');
-        $pimpinan = 'wakajati';
+        $pimpinan = $this->session->userdata('isPimpinan');
+        // $pimpinan = 'wakajati';
         $pesan = $this->input->post('pesanPenolakan');
         $this->upd->update_penolakan_byId($idTrx,$pesan,$pimpinan);
         
@@ -223,97 +223,106 @@ class Update_controller extends CI_Controller {
 
     }
 
-function prog_update_disposisi_pimpinan() {
+    function prog_update_disposisi_pimpinan() {
 
-    $dataOne = array();
-    $dataTwo = array();
-    $postData = $this->input->post();
+        $dataOne = array();
+        $dataTwo = array();
+        $postData = $this->input->post();
 
-    $checkboxesToCheck = array('A17', 'A18', 'A19', 'A20', 'A21', 'A22', 'A23', 'A24', 'A25', 'A26', 'A27', 'A28', 'A29', 'A30', 'A31', 'A32', 'A33', 'A34', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25', 'F26', 'F28', 'F29', 'F27', 'F30', 'F31', 'F32', 'F34', 'L38');
+        $checkboxesToCheck = array('A17', 'A18', 'A19', 'A20', 'A21', 'A22', 'A23', 'A24', 'A25', 'A26', 'A27', 'A28', 'A29', 'A30', 'A31', 'A32', 'A33', 'A34', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25', 'F26', 'F28', 'F29', 'F27', 'F30', 'F31', 'F32', 'F34', 'L38');
 
-    // Daftar checkbox extends_
-    $extendedCheckboxes = array('extends_F25', 'extends_F26', 'extends_F28', 'extends_F29', 'extends_F32', 'extends_F34', 'extends_L38');
+        // Daftar checkbox extends_
+        $extendedCheckboxes = array('extends_F25', 'extends_F26', 'extends_F28', 'extends_F29', 'extends_F32', 'extends_F34', 'extends_L38');
 
-    foreach ($postData as $name => $value) {
-        if (in_array($name, $checkboxesToCheck) || in_array($name, $extendedCheckboxes)) {
-            $dataOne[$name] = $value;
-        } else {
-            $dataTwo[$name] = $value;
+        foreach ($postData as $name => $value) {
+            if (in_array($name, $checkboxesToCheck) || in_array($name, $extendedCheckboxes)) {
+                $dataOne[$name] = $value;
+            } else {
+                $dataTwo[$name] = $value;
+            }
         }
-    }
 
-    // Konversi nilai checkbox yang bernilai "on" menjadi 1
-    foreach ($dataOne as $key => $value) {
-        if ($value === 'on' && (in_array($key, $checkboxesToCheck) || in_array($key, $extendedCheckboxes))) {
-            $dataOne[$key] = 1;
+        // Konversi nilai checkbox yang bernilai "on" menjadi 1
+        foreach ($dataOne as $key => $value) {
+            if ($value === 'on' && (in_array($key, $checkboxesToCheck) || in_array($key, $extendedCheckboxes))) {
+                $dataOne[$key] = 1;
+            }
         }
-    }
 
-    // Validasi apakah form string harus diisi jika checkbox extends_ dicentang
-    foreach ($extendedCheckboxes as $checkbox) {
-        // Hanya lakukan validasi jika checkbox dicentang
-        if (isset($dataOne[$checkbox]) && $dataOne[$checkbox] == 1) {
-            $inputKey = 'input_' . $checkbox;
-            if (empty($dataOne[$inputKey])) {
-                // Checkbox dicentang tetapi input kosong
+        // Validasi apakah form string harus diisi jika checkbox extends_ dicentang
+        foreach ($extendedCheckboxes as $checkbox) {
+            // Hanya lakukan validasi jika checkbox dicentang
+            if (isset($dataOne[$checkbox]) && $dataOne[$checkbox] == 1) {
+                $inputKey = 'input_' . $checkbox;
+                if (empty($dataOne[$inputKey])) {
+                    // Checkbox dicentang tetapi input kosong
+                    // Tambahkan logika atau tindakan yang sesuai di sini, misalnya munculkan pesan error
+                    $this->session->set_flashdata('message', 'Harap isi di bagian checkbox yang dipilih');
+                    
+                    redirect('pimpinan/surat/add_document/'. $this->input->post('idTrx'),'refresh');
+                    return; // Hentikan eksekusi jika ada error
+                }
+            }
+
+            // Validasi tambahan: Jika checkbox induk dipilih, pastikan bagian extends juga terisi
+            $parentCheckbox = str_replace('extends_', '', $checkbox);
+            if (isset($dataOne[$parentCheckbox]) && $dataOne[$parentCheckbox] == 1 && empty($dataOne[$checkbox])) {
+                // Checkbox induk dipilih tetapi bagian extends kosong
                 // Tambahkan logika atau tindakan yang sesuai di sini, misalnya munculkan pesan error
                 $this->session->set_flashdata('message', 'Harap isi di bagian checkbox yang dipilih');
-                
                 redirect('pimpinan/surat/add_document/'. $this->input->post('idTrx'),'refresh');
                 return; // Hentikan eksekusi jika ada error
             }
         }
 
-        // Validasi tambahan: Jika checkbox induk dipilih, pastikan bagian extends juga terisi
-        $parentCheckbox = str_replace('extends_', '', $checkbox);
-        if (isset($dataOne[$parentCheckbox]) && $dataOne[$parentCheckbox] == 1 && empty($dataOne[$checkbox])) {
-            // Checkbox induk dipilih tetapi bagian extends kosong
-            // Tambahkan logika atau tindakan yang sesuai di sini, misalnya munculkan pesan error
-            $this->session->set_flashdata('message', 'Harap isi di bagian checkbox yang dipilih');
+        if (!empty($dataOne)) {
+        switch ($this->input->post('radioKeamanan')) {
+                case 'sr':
+                    $dataOne['Q6'] = 1;
+                    break;
+
+                case 'r':
+                    $dataOne['Q7'] = 1;
+                    break;
+
+                case 't':
+                    $dataOne['Q8'] = 1;
+                    break;
+
+                case 'b':
+                    $dataOne['Q9'] = 1;
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+            $protectOutput = ['L17', 'L19', 'L21', 'L23', 'L25', 'L27', 'L30', 'L32', 'L34', 'L36', 'L38'];
+
+            if (array_reduce($protectOutput, function($carry, $input) {
+                return $carry || !empty($this->input->post($input));
+            }, false)) {
+                $dataOne['disposisiId'] = $this->input->post('idDisposisi');
+                $this->upd->save_disposisi_pimpinan($dataOne,$dataTwo);
+                $this->session->set_flashdata('success', 'Dokumen berhasil di proses dan sudah dikirimkan ke persuratan !');
+                redirect('pimpinan/surat/listing/','refresh');
+            } else {
+                $this->session->set_flashdata('message', 'Harap isi bagian yang diperlukan !');
+                redirect('pimpinan/surat/add_document/'. $this->input->post('idTrx'),'refresh');
+            }
+           
+            
+        }else {
+            $this->session->set_flashdata('message', 'Harap isi bagian yang diperlukan !');
             redirect('pimpinan/surat/add_document/'. $this->input->post('idTrx'),'refresh');
-            return; // Hentikan eksekusi jika ada error
-        }
-    }
-
-    if (!empty($dataOne)) {
-       switch ($this->input->post('radioKeamanan')) {
-            case 'sr':
-                $dataOne['Q6'] = 1;
-                break;
-
-            case 'r':
-                $dataOne['Q7'] = 1;
-                break;
-
-            case 't':
-                $dataOne['Q8'] = 1;
-                break;
-
-            case 'b':
-                $dataOne['Q9'] = 1;
-                break;
-
-            default:
-                # code...
-                break;
         }
         
-        $dataOne['disposisiId'] = $this->input->post('idDisposisi');
-        $this->upd->save_disposisi_pimpinan($dataOne,$dataTwo);
-        $this->session->set_flashdata('success', 'Dokumen berhasil di proses dan sudah dikirimkan ke persuratan !');
-        redirect('pimpinan/surat/listing/','refresh');
-        
-    }else {
-        $this->session->set_flashdata('message', 'Harap isi bagian yang diperlukan !');
-        redirect('pimpinan/surat/add_document/'. $this->input->post('idTrx'),'refresh');
-    }
-    
-    // var_dump($dataTwo);
-    // echo "<br />";
-    // var_dump($dataOne);
+        // var_dump($dataTwo);
+        // echo "<br />";
+        // var_dump($dataOne);
 
-    // Jika semua validasi berhasil, Anda dapat melanjutkan dengan operasi lain seperti menyimpan data ke database
-}
+        // Jika semua validasi berhasil, Anda dapat melanjutkan dengan operasi lain seperti menyimpan data ke database
+    }
 
 
 

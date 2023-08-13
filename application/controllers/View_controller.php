@@ -68,6 +68,7 @@ class View_controller extends CI_Controller {
 
 
 
+
 }
 
 /* End of file View_controller.php and path \application\controllers\View_controller.php */
