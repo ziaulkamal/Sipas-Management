@@ -53,7 +53,7 @@
            						</li>
 								<?php } ?>
 
-								<?php if ($this->session->userdata('level') == 3 || $this->session->userdata('level') == 1) { ?>
+								<?php if ($this->session->userdata('level') == 3) { ?>
            						<li class="menu-item">
            							<a href="<?= base_url('persuratan/surat/listing') ?>" class="menu-link">
            								<span class="menu-text">Daftar Surat</span>
@@ -61,7 +61,7 @@
            						</li>
 								<?php } ?>
 
-								<?php if ($this->session->userdata('level') == 2) { ?>
+								<?php if ($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2) { ?>
            						<li class="menu-item">
            							<a href="<?= base_url('pimpinan/surat/listing') ?>" class="menu-link">
            								<span class="menu-text">Daftar Surat</span>
