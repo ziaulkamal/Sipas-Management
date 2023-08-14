@@ -45,56 +45,63 @@
 <?php if ($this->uri->segment(1)== 'persuratan') { 
     foreach ($data as $res) { ?>
         <script>
-            document.getElementById("final-<?= $res->trxId ?>").addEventListener("click", function () {
-                Swal.fire({
-                    title: "Tujuan Akhir <br />[ <?= ucwords($res->judulSurat) ?> ]",
-                    html: `
-                    <input type="hidden" id="idTrx" name="idTrx" value="<?= $res->trxId ?>">
-                    <select class="form-control" data-toggle="select2" data-width="100%" name="respon" id="review">
-                        <option default selected>--Pilih--</option>
-                        <option value="persuratan">Persuratan</option>
-                        <option value="pimpinan">Pimpinan</option>
-                        <option value="pembinaan">Pembinaan</option>
-                        <option value="koordinator">Koordinator</option>
-                        <option value="pengawasan">Asisten Pengawasan</option>
-                        <option value="kepala bagian tata usaha">Kepala Bagian Tata Usaha</option>
-                        <option value="wakil kepala kejaksaan tinggi">Wakil Kepala Kejaksaan Tinggi</option>
-                        <option value="asistentu">Asisten Perdata dan Tata Usaha Negara</option>
-                        <option value="intel">Asisten Intelijen</option>
-                        <option value="asisten pidana militer">Asisten Pidana Militer</option>
-                        <option value="asisten tindak pidana umum">Asisten Tindak Pidana Umum</option>
-                        <option value="asisten tindak pidana khusus">Asisten Tindak Pidana Khusus</option>
-                        <option value="lainnya">Lainnya</option>
-                    </select>`,
-                    icon: "info",
-                    showCancelButton: true,
-                    confirmButtonColor: "#28bb4b",
-                    cancelButtonColor: "#f34e4e",
-                    confirmButtonText: "Ya Simpan"
-                }).then(function (result) {
-                    if (result.isConfirmed) {
-                        const review = document.getElementById('review').value;
-                        const idTrx = document.getElementById('idTrx').value;
-                        // Create a form element
-                        const form = document.createElement('form');
-                        form.method = 'POST';
-                        form.action = '<?= base_url("persuratan/go/final/").$res->trxId ?>';
-                        
-                        // Add hidden fields to the form
-                        const idTrxInput = document.createElement('input');
-                        idTrxInput.type = 'hidden';
-                        idTrxInput.name = 'idTrx';
-                        idTrxInput.value = idTrx;
-                        form.appendChild(idTrxInput);
-                        
-                        
-                        // Append the form to the body and submit it
-                        document.body.appendChild(form);
-                        form.submit();
-                    }
-                });
-            });
-        </script>
+          document.getElementById("final-<?= $res->trxId ?>").addEventListener("click", function () {
+              Swal.fire({
+                  title: "Tujuan Akhir <br />[ <?= ucwords($res->judulSurat) ?> ]",
+                  html: `
+                  <input type="hidden" id="idTrx" name="idTrx" value="<?= $res->trxId ?>">
+                  <select class="form-control" data-toggle="select2" data-width="100%" name="respon" id="review">
+                              <option default selected>--Pilih--</option>
+                              <option value="persuratan">Persuratan</option>
+                              <option value="pimpinan">Pimpinan</option>
+                              <option value="pembinaan">Pembinaan</option>
+                              <option value="koordinator">Koordinator</option>
+                              <option value="asisten pengawasan">Asisten Pengawasan</option>
+                              <option value="kepala bagian tata usaha">Kepala Bagian Tata Usaha</option>
+                              <option value="wakil kepala kejaksaan tinggi">Wakil Kepala Kejaksaan Tinggi</option>
+                              <option value="asisten perdata dan tata usaha negara">Asisten Perdata dan Tata Usaha Negara</option>
+                              <option value="asisten intelijen">Asisten Intelijen</option>
+                              <option value="asisten pidana militer">Asisten Pidana Militer</option>
+                              <option value="asisten tindak pidana umum">Asisten Tindak Pidana Umum</option>
+                              <option value="asisten tindak pidana khusus">Asisten Tindak Pidana Khusus</option>
+                              <option value="lainnya">Lainnya</option>
+                  </select>`,
+                  icon: "info",
+                  showCancelButton: true,
+                  confirmButtonColor: "#28bb4b",
+                  cancelButtonColor: "#f34e4e",
+                  confirmButtonText: "Ya Simpan"
+              }).then(function (result) {
+                  if (result.isConfirmed) {
+                      const review = document.getElementById('review').value;
+                      const idTrx = document.getElementById('idTrx').value;
+
+                      // Membuat elemen form
+                      const form = document.createElement('form');
+                      form.method = 'POST';
+                      form.action = '<?= base_url("persuratan/go/final/") ?>' + idTrx;
+
+                      // Menambahkan input tersembunyi ke dalam form
+                      const idTrxInput = document.createElement('input');
+                      idTrxInput.type = 'hidden';
+                      idTrxInput.name = 'idTrx';
+                      idTrxInput.value = idTrx;
+                      form.appendChild(idTrxInput);
+
+                      const reviewInput = document.createElement('input');
+                      reviewInput.type = 'hidden';
+                      reviewInput.name = 'respon';
+                      reviewInput.value = review;
+                      form.appendChild(reviewInput);
+
+                      // Meletakkan form ke dalam body dan mengirimkannya
+                      document.body.appendChild(form);
+                      form.submit();
+                  }
+              });
+          });
+      </script>
+
     <?php }
 } ?>
 

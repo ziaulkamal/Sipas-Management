@@ -126,12 +126,6 @@ class Update_controller extends CI_Controller {
 
     function update_disposisi($idTrx) {
         $load = $this->get->getJoinTrxAndDisposisi_byIdTrx($idTrx)->row_array();
-        
-        // echo "<pre>";
-        // var_dump ($load->row_array());
-        // echo "</pre>";
-        
-        // die();
 
         $data = array(
             'title'     => 'Update Lembaran Disposisi ',

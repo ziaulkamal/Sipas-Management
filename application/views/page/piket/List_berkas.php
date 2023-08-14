@@ -65,7 +65,7 @@
 									<tr>
 										<td><?= $no++; ?></td>
 										<td><?= $res->nomorDTrx; ?></td>
-										<td><?= $res->judulSurat; ?></td>
+										<td><span class="" title="<?= ucfirst($res->judulSurat); ?>" tabindex="0" data-plugin="tippy" data-tippy-interactive="true"><?= substr(ucfirst($res->judulSurat),0 ,40).'.......'; ?></span></td>
 
 
 										<td><?= date_indo($res->tglSuratMasuk); ?></td>
@@ -108,7 +108,7 @@
 									<tr>
 										<td><?= $no++; ?></td>
 										<td><?= $res->nomorDTrx; ?></td>
-										<td><?= $res->judulSurat; ?></td>
+										<td><?= substr(ucfirst($res->judulSurat),0 ,60); ?></td>
 
 
 										<td><?= longdate_indo($res->tglSuratMasuk); ?></td>

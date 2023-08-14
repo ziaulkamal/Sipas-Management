@@ -49,6 +49,8 @@
 
 <!-- Datatables init -->
 <script src="<?= base_url('public/') ?>js/pages/datatables.init.js"></script>
+<!-- Tippy js-->
+<script src="<?= base_url('public/') ?>libs/tippy.js/tippy.all.min.js"></script>
 
 
 

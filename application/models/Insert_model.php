@@ -14,12 +14,13 @@ class Insert_model extends CI_Model
      * @return void
      */
     function save_surat($genTrx,$dataOne, $dataTwo) {
+        // IDEA: Track log Piket
         $logTrx1 = array(
             'trxId' => $genTrx,
             'level' => 4,
             'logDate' => date('Y-m-d'),
             'statusLog' => 0,
-            'keteranganLog' => 'Piket menerima surat masuk dengan nomor  '. $dataTwo['nomorDTrx'] . ' dan sedang diteruskan ke persuratan. '
+            'keteranganLog' => 'Piket mengirimkan surat masuk dengan nomor  '. $dataTwo['nomorDTrx'] . ' dan telah diterima bagian persuratan. '
         );
         $this->db->insert('log_trx', $logTrx1);
 
@@ -51,7 +52,7 @@ class Insert_model extends CI_Model
             'level' => 4,
             'logDate' => date('Y-m-d'),
             'statusLog' => 0,
-            'keteranganLog' => 'Piket melakukan perubahan dari surat masuk dengan nomor  '. $dataTwo['nomorDTrx'] . ' dan sedang kembali diteruskan ke persuratan. '
+            'keteranganLog' => 'Piket melakukan perubahan dari surat masuk dengan nomor  '. $dataTwo['nomorDTrx'] . ' dan telah diterima bagian persuratan. '
         );
         $this->db->insert('log_trx', $logTrx1);    
         $logTrx2 = array(
@@ -92,23 +93,34 @@ class Insert_model extends CI_Model
         return;
     }
 
+        
+    /**
+     * Method save_disposisi
+     *
+     * @param $idTrx $idTrx [explicite description]
+     * @param $data $data [explicite description]
+     * @param $idDisposisi $idDisposisi [explicite description]
+     * Bagian Persuratan Setelah Terima Surat Dari Piket
+     * @return void
+     */
+
     function save_disposisi($idTrx,$data,$idDisposisi) {
         $this->db->insert('tb_disposisi', $data);
-        $logTrx_1 = array(
-            'trxId' => $idTrx,
-            'level' => 4,
-            'logDate' => date('Y-m-d'),
-            'statusLog' => 1,
-            'keteranganLog' => 'Surat telah diterima oleh persuratan dan dalam tahapan proses'
-        );
-        $this->db->insert('log_trx', $logTrx_1);
+        // $logTrx_1 = array(
+        //     'trxId' => $idTrx,
+        //     'level' => 4,
+        //     'logDate' => date('Y-m-d'),
+        //     'statusLog' => 1,
+        //     'keteranganLog' => 'Surat telah diterima oleh persuratan dan dalam tahapan proses'
+        // );
+        // $this->db->insert('log_trx', $logTrx_1);
 
         $logTrx_3 = array(
             'trxId' => $idTrx,
             'level' => 3,
             'logDate' => date('Y-m-d'),
             'statusLog' => 0,
-            'keteranganLog' => 'Surat telah dikirimkan ke pimpinan ('. $data['tujuanPimpinanD'] .')'
+            'keteranganLog' => 'Lembaran disposisi telah dikirimkan ke pimpinan ('. $data['tujuanPimpinanD'] .')'
         );
         $this->db->insert('log_trx', $logTrx_3);
         sleep(1);
@@ -116,7 +128,7 @@ class Insert_model extends CI_Model
             'trxId' => $idTrx,
             'logDate' => date('Y-m-d'),
             'statusLog' => 1,
-            'keteranganLog' => 'Lembaran disposisi baru saja di kirim dari persuratan '
+            'keteranganLog' => 'Lembaran disposisi baru saja diterima dari persuratan '
         );
         switch ($data['tujuanPimpinanD']) {
             case 'kajati':
@@ -152,7 +164,7 @@ class Insert_model extends CI_Model
             'trxId' => $idTrx,
             'logDate' => date('Y-m-d'),
             'statusLog' => 1,
-            'keteranganLog' => 'Lembaran disposisi sudah di proses '
+            'keteranganLog' => 'Perubahan lembaran disposisi baru saja diterima dari persuratan '
         );
         switch ($data['tujuanPimpinanD']) {
             case 'kajati':
@@ -183,10 +195,10 @@ class Insert_model extends CI_Model
     function save_disposisi_pimpinan($dataOne,$dataTwo) {
         $logTrx_1 = array(
             'trxId' => $dataTwo['idTrx'],
-            'level' => 3,
+            'level' => $this->session->userdata('level'),
             'logDate' => date('Y-m-d'),
             'statusLog' => 1,
-            'keteranganLog' => 'Lembaran disposisi telah diterima oleh pimpinan dan sudah diproses'
+            'keteranganLog' => 'Lembaran disposisi telah diselesaikan pimpinan'
         );
         $this->db->insert('log_trx', $logTrx_1);
         $this->db->insert('disposisi_detail', $dataOne);
@@ -238,6 +250,16 @@ class Insert_model extends CI_Model
     }
 
     function updateFinalRespon($idTrx,$data) {
+
+        $logTrx_1 = array(
+            'trxId' => $idTrx,
+            'level' => 3,
+            'logDate' => date('Y-m-d'),
+            'statusLog' => 1,
+            'keteranganLog' => 'Surat ini telah selesai di proses dan di teruskan ke ' . $data['ulasanDTrx']
+        );
+        $this->db->insert('log_trx', $logTrx_1);
+
         $dataUpdate = array(
             'resOut' => 1,
             'updateTrxDate' => date('Y-m-d')
