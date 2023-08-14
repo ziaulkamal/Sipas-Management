@@ -96,7 +96,7 @@
                                                 <?php }}
                                             break;
                                         
-                                        case '2':
+                                        case '1':
                                             foreach ($this->session->userdata('put')->result() as $notif) {
                                             if ($notif->level == 1) { ?>
                                             <a href="<?= base_url('follow') ?>"
