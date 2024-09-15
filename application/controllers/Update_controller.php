@@ -22,7 +22,7 @@ class Update_controller extends CI_Controller {
     function edit_surat($idTrx){
 
         $load = $this->get->getSingleSurat($idTrx)->row_array();
-        
+        if ($this->session->userdata('masuk') == TRUE && $this->session->userdata('level') == '4') {
         $data = array(
             'title'     => 'Update Berkas',
             'titlePage' => 'Update Berkas Nomor : <b>['.$load['nomorDTrx'].']</b>',
@@ -31,6 +31,10 @@ class Update_controller extends CI_Controller {
             'action'    => 'piket/go/prog_update_surat',
         );
         $this->load->view('index', $data);
+        } else {
+            $this->session->sess_destroy();
+            redirect('login');
+        }
     }
 
     function prog_update_surat(){
@@ -100,16 +104,22 @@ class Update_controller extends CI_Controller {
     function add_disposisi($idTrx) {
         $load = $this->get->getSingleSurat($idTrx)->row_array();
         $countDisposisi = $this->get->getAllDisposisi()->num_rows();
+        $disposisi = $load['disposisiId'];
 
-        $data = array(
-            'title'     => 'Lembaran Disposisi ',
-            'titlePage' => 'Buat Lembaran Disposisi Untuk Dokumen : <b>['.$load['idTrx'].']</b>',
-            'page'      => 'page/piket/lembar_disposisi',
-            'data'      => $load,
-            'nomorAgenda'      => $countDisposisi+1,
-            'action'    => 'persuratan/go/prog_add_document',
-        );
-        $this->load->view('index', $data);
+        if ($this->session->userdata('masuk') == TRUE && $this->session->userdata('level') == '3') {
+            $data = array(
+                'title'     => 'Lembaran Disposisi ',
+                'titlePage' => 'Buat Lembaran Disposisi Untuk Dokumen : <b>['.$load['idTrx'].']</b>',
+                'page'      => 'page/piket/lembar_disposisi',
+                'data'      => $load,
+                'nomorAgenda'      => $countDisposisi+1,
+                'action'    => 'persuratan/go/prog_add_document/'.$disposisi,
+            );
+            $this->load->view('index', $data);
+        } else {
+            $this->session->sess_destroy();
+            redirect('login');
+        }
     }
 
     function update_penolakan($idTrx) {
@@ -127,29 +137,35 @@ class Update_controller extends CI_Controller {
     function update_disposisi($idTrx) {
         $load = $this->get->getJoinTrxAndDisposisi_byIdTrx($idTrx)->row_array();
 
-        $data = array(
-            'title'     => 'Update Lembaran Disposisi ',
-            'titlePage' => 'Perbaikan Lembaran Disposisi Untuk Dokumen : <b>['.$load['idTrx'].']</b>',
-            'page'      => 'page/piket/lembar_disposisi',
-            'data'      => $load,
-            'nomorAgenda'    => $load['nomorAgendaD'],
-            'action'    => 'persuratan/go/prog_update_document',
-        );
-        $this->load->view('index', $data);
+        if ($this->session->userdata('masuk') == TRUE && $this->session->userdata('level') == '3') {
+            $data = array(
+                'title'     => 'Update Lembaran Disposisi ',
+                'titlePage' => 'Perbaikan Lembaran Disposisi Untuk Dokumen : <b>['.$load['idTrx'].']</b>',
+                'page'      => 'page/piket/lembar_disposisi',
+                'data'      => $load,
+                'nomorAgenda'    => $load['nomorAgendaD'],
+                'action'    => 'persuratan/go/prog_update_document',
+            );
+            $this->load->view('index', $data);
+        } else {
+            $this->session->sess_destroy();
+            redirect('login');
+        }
+
     }
 
-    function prog_insert_disposisi() {
+    function prog_insert_disposisi($id) {
 
         $this->_rules('disposisiStepSatu');
         $idTrx = $this->input->post('idTrx');
-        $idDisposisi = 'dp'.date('Ymdhis').$this->input->post('nomor_agenda');
+        // $idDisposisi = 'dp'.date('Ymdhis').$this->input->post('nomor_agenda');
         
         
         if ($this->form_validation->run() == FALSE) {
             $this->add_disposisi($idTrx);
         } else {
             $data = array(
-            	'idDisposisi' => $idDisposisi,	
+            	// 'idDisposisi' => $idDisposisi,	
                 'trxId' => $idTrx,	
                 'nomorAgendaD' => $this->input->post('nomor_agenda'),	
                 'tglPenerimaanD' => $this->input->post('tanggal_penerimaan'),	
@@ -162,10 +178,34 @@ class Update_controller extends CI_Controller {
                 'updateDisposisiDate' => date('Y-m-d'),	
             );
 
-            
-            $this->upd->save_disposisi($idTrx,$data,$idDisposisi);
+            switch ($data['tingkatKeamananD']) {
+                case 'sr':
+                    $dataTwo['Q6'] = 1;
+                    break;
+                case 'r':
+                    $dataTwo['Q7'] = 1;
+                    break;
+                case 't':
+                    $dataTwo['Q8'] = 1;
+                    break;
+                case 'b':
+                    $dataTwo['Q9'] = 1;
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+            $dataTwo['disposisiId'] = $id;
+
+            // echo "<pre>";
+            // print_r ($data);
+            // echo "</pre>";
             // die();
-            $this->session->set_flashdata('success', 'Berhasil mengirimin ke pimpinan dan menunggu respon pimpinan !');            
+            
+            $this->upd->save_disposisi($idTrx,$data,$id,$dataTwo);
+            // die();
+            $this->session->set_flashdata('success', 'Berhasil mengirim ke pimpinan dan menunggu respon pimpinan !');            
             redirect('persuratan/surat/listing','refresh');            
         }
 
@@ -206,30 +246,35 @@ class Update_controller extends CI_Controller {
         
     }
 
-    function add_disposisi_pimpinan($idTrx) {
+    function forward_disposisi_persuratan($idTrx) {
         
-        $load = $this->get->getSingleDisposisi_byIdTrx($idTrx)->row_array();
-   
-        
-        $data = array(
-            'title'     => 'Proses Lembaran Disposisi ',
-            'titlePage' => 'Proses Lembaran Disposisi Untuk Berkas : <b>['.$load['idTrx'].']</b>',
-            'page'      => 'page/pimpinan/disposisi_pimpinan',
-            'data'      => $load,
-            'nomorAgenda'    => $load['nomorAgendaD'],
-            'action'    => 'pimpinan/go/prog_update_disposisi_pimpinan',
-        );
-        $this->load->view('index', $data);
+        $load = $this->get->getSingleDisposisi_byIdTrx($idTrx)->row_array();   
+        if ($this->session->userdata('masuk') == TRUE && $this->session->userdata('level') == '3') {
+            $data = array(
+                'title'     => 'Proses Lembaran Disposisi ',
+                'titlePage' => 'Proses Lembaran Disposisi Untuk Berkas : <b>['.$load['idTrx'].']</b>',
+                'page'      => 'page/persuratan/disposisi_pimpinan',
+                'data'      => $load,
+                'nomorAgenda'    => $load['nomorAgendaD'],
+                'action'    => 'persuratan/go/prog_update_disposisi_persuratan',
+            );
+            $this->load->view('index', $data);
+            
+        } else {
+            $this->session->sess_destroy();
+            redirect('login');
+        }     
+
 
     }
 
-    function prog_update_disposisi_pimpinan() {
+    function prog_update_disposisi_persuratan() {
 
         $dataOne = array();
         $dataTwo = array();
         $postData = $this->input->post();
 
-        $checkboxesToCheck = array('A17', 'A18', 'A19', 'A20', 'A21', 'A22', 'A23', 'A24', 'A25', 'A26', 'A27', 'A28', 'A29', 'A30', 'A31', 'A32', 'A33', 'A34', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25', 'F26', 'F28', 'F29', 'F27', 'F30', 'F31', 'F32', 'F34','L38');
+        $checkboxesToCheck = array('A17', 'A18', 'A19', 'A20', 'A21', 'A22', 'A23', 'A24', 'A25', 'A26', 'A27', 'A28', 'A29', 'A30', 'A31', 'A32', 'A33', 'A34', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25', 'F26', 'F28', 'F29', 'F27', 'F30', 'F31', 'F32', 'F34','L38','L17', 'L19', 'L21', 'L23', 'L25', 'L27', 'L30', 'L32', 'L34', 'L36');
 
         // Daftar checkbox extends_
         $extendedCheckboxes = array('extends_F25', 'extends_F26', 'extends_F28', 'extends_F29', 'extends_F32', 'extends_F34','extends_L38');
@@ -259,7 +304,7 @@ class Update_controller extends CI_Controller {
                     // Tambahkan logika atau tindakan yang sesuai di sini, misalnya munculkan pesan error
                     $this->session->set_flashdata('message', 'Harap isi di bagian checkbox yang dipilih');
                     
-                    redirect('pimpinan/surat/add_document/'. $this->input->post('idTrx'),'refresh');
+                    redirect('persuratan/surat/forward_document/'. $this->input->post('idTrx'),'refresh');
                     return; // Hentikan eksekusi jika ada error
                 }
             }
@@ -270,56 +315,36 @@ class Update_controller extends CI_Controller {
                 // Checkbox induk dipilih tetapi bagian extends kosong
                 // Tambahkan logika atau tindakan yang sesuai di sini, misalnya munculkan pesan error
                 $this->session->set_flashdata('message', 'Harap isi di bagian checkbox yang dipilih');
-                redirect('pimpinan/surat/add_document/'. $this->input->post('idTrx'),'refresh');
+                redirect('persuratan/surat/forward_document/'. $this->input->post('idTrx'),'refresh');
                 return; // Hentikan eksekusi jika ada error
             }
         }
 
         if (!empty($dataOne)) {
-        switch ($this->input->post('radioKeamanan')) {
-                case 'sr':
-                    $dataOne['Q6'] = 1;
-                    break;
-
-                case 'r':
-                    $dataOne['Q7'] = 1;
-                    break;
-
-                case 't':
-                    $dataOne['Q8'] = 1;
-                    break;
-
-                case 'b':
-                    $dataOne['Q9'] = 1;
-                    break;
-
-                default:
-                    # code...
-                    break;
-            }
+        
             $protectOutput = ['L17', 'L19', 'L21', 'L23', 'L25', 'L27', 'L30', 'L32', 'L34', 'L36','L38'];
 
             if (array_reduce($protectOutput, function($carry, $input) {
                 return $carry || !empty($this->input->post($input));
             }, false)) {
-                $dataOne['disposisiId'] = $this->input->post('idDisposisi');
+                // $dataOne['disposisiId'] = $this->input->post('idDisposisi');
                 
                 // echo "<pre>";
                 // print_r ($dataOne);
                 // echo "</pre>";
                 // die();
                 $this->upd->save_disposisi_pimpinan($dataOne,$dataTwo);
-                $this->session->set_flashdata('success', 'Dokumen berhasil di proses dan sudah dikirimkan ke persuratan !');
-                redirect('pimpinan/surat/listing/','refresh');
+                $this->session->set_flashdata('success', 'Dokumen berhasil di proses dan sudah disimpan. Silahkan proses tujuan akhir !');
+                redirect('persuratan/surat/listing/','refresh');
             } else {
                 $this->session->set_flashdata('message', 'Harap isi bagian yang diperlukan !');
-                redirect('pimpinan/surat/add_document/'. $this->input->post('idTrx'),'refresh');
+                redirect('persuratan/surat/forward_document/'. $this->input->post('idTrx'),'refresh');
             }
            
             
         }else {
             $this->session->set_flashdata('message', 'Harap isi bagian yang diperlukan !');
-            redirect('pimpinan/surat/add_document/'. $this->input->post('idTrx'),'refresh');
+            redirect('persuratan/surat/forward_document/'. $this->input->post('idTrx'),'refresh');
         }
         
         // var_dump($dataTwo);
@@ -329,21 +354,59 @@ class Update_controller extends CI_Controller {
         // Jika semua validasi berhasil, Anda dapat melanjutkan dengan operasi lain seperti menyimpan data ke database
     }
 
+    function approveBerkas($idTrx)
+    {
+        $this->upd->approve_disposisi($idTrx);
+        redirect('pimpinan/surat/listing');
+    }
+
+    function deleteUser($idAuth)
+    {
+        $this->upd->deleteUser($idAuth);
+        $this->session->set_flashdata('success', 'Berhasil menghapus user !');
+        redirect('admin/user/listing');
+        
+    }
 
     function final_result($idTrx) {
-        $data['ulasanDTrx'] = 'Tujuan akhir : '. $this->input->post('respon');
+        switch ($this->input->post('respon')) {
+            case '5':
+                $guestOutput = "Asisten Pembinaaan";
+                break;
+            case '6':
+                $guestOutput = "Asisten Intelijen";
+                break;
+            case '7':
+                $guestOutput = "Asisten Tindak Pidana Umum";
+                break;
+            case '8':
+                $guestOutput = "Asisten Tindak Pidana Khusus";
+                break;
+            case '9':
+                $guestOutput = "Asisten Perdata dan Tata Usaha";
+                break;
+            case '10':
+                $guestOutput = "Asisten Pidana Militer";
+                break;
+            case '11':
+                $guestOutput = "Asisten Pengawasan";
+                break;
+            case '12':
+                $guestOutput = "Koordinator";
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+        $data['ulasanDTrx'] = 'Tujuan akhir : '. $guestOutput;
+        $data['levelTujuan'] = $this->input->post('respon');
         $this->upd->updateFinalRespon($idTrx,$data);
         $this->session->set_flashdata('message', 'Proses telah selesai');
         
         redirect('/','refresh');
         
     }
-
-
-
-
-
-
 
 
     function _rules($validasi) {

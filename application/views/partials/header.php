@@ -10,7 +10,6 @@
 	<title>SIPAS</title>
 	<?php }
         ?>
-
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta content="Aplikasi Sistem Informasi Pelacakan Surat" name="description" />
 	<meta content="rijaldev" name="author" />
@@ -21,7 +20,6 @@
 	<link href="<?= base_url('public/') ?>css/bootstrap.min.css" rel="stylesheet" type="text/css" id="app-style" />
 	<link href="<?= base_url('public/') ?>css/app.min.css" rel="stylesheet" type="text/css" />
 	<link href="<?= base_url('public/') ?>css/icons.min.css" rel="stylesheet" type="text/css" />
-
 
 	<!-- Sweet Alert-->
 	<link href="<?= base_url('public/') ?>libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
@@ -45,5 +43,4 @@
 </head>
 
 <body>
-
 	<div id="wrapper">

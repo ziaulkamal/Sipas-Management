@@ -52,19 +52,14 @@
                   <input type="hidden" id="idTrx" name="idTrx" value="<?= $res->trxId ?>">
                   <select class="form-control" data-toggle="select2" data-width="100%" name="respon" id="review">
                               <option default selected>--Pilih--</option>
-                              <option value="persuratan">Persuratan</option>
-                              <option value="pimpinan">Pimpinan</option>
-                              <option value="pembinaan">Pembinaan</option>
-                              <option value="koordinator">Koordinator</option>
-                              <option value="asisten pengawasan">Asisten Pengawasan</option>
-                              <option value="kepala bagian tata usaha">Kepala Bagian Tata Usaha</option>
-                              <option value="wakil kepala kejaksaan tinggi">Wakil Kepala Kejaksaan Tinggi</option>
-                              <option value="asisten perdata dan tata usaha negara">Asisten Perdata dan Tata Usaha Negara</option>
-                              <option value="asisten intelijen">Asisten Intelijen</option>
-                              <option value="asisten pidana militer">Asisten Pidana Militer</option>
-                              <option value="asisten tindak pidana umum">Asisten Tindak Pidana Umum</option>
-                              <option value="asisten tindak pidana khusus">Asisten Tindak Pidana Khusus</option>
-                              <option value="lainnya">Lainnya</option>
+                              <option value="5">Asisten Pembinaaan</option>
+                              <option value="6">Asisten Intelijen</option>
+                              <option value="7">Asisten Tindak Pidana Umum</option>
+                              <option value="8">Asisten Tindak Pidana Khusus</option>
+                              <option value="9">Asisten Perdata dan Tata Usaha</option>
+                              <option value="10">Asisten Pidana Militer</option>
+                              <option value="11">Asisten Pengawasan</option>
+                              <option value="12">Koordinator</option>
                   </select>`,
                   icon: "info",
                   showCancelButton: true,
@@ -125,11 +120,11 @@
 
 <!-- tambah data surat -->
 <script>
-      <?php if ($this->uri->segment(1) == 'add_surat' || $this->uri->segment(1) == 'pro_surat_add') { ?>
+      <?php if ($this->uri->segment(3) == 'add_document' || $this->uri->segment(3) == 'prog_save') { ?>
         $('form').submit(function (event) {
         event.preventDefault(); // Menghentikan aksi default submit form
         Swal.fire({
-            title: "Apakah anda yakin?",
+            title: "Apakah anda yakin ?",
             text: "Data akan disimpan",
             icon: "warning",
             showCancelButton: true,
@@ -143,6 +138,68 @@
             Swal.fire({
                 title: 'Data Surat',
                 text: 'Berhasil Ditambahkan!',
+                icon: 'success',
+                didClose: () => {
+                $('form').unbind('submit').submit(); // Melanjutkan proses submit form setelah pesan ditutup
+                }
+            });
+            }
+        });
+        });
+    <?php } ?>
+</script>
+
+<!-- tambah disposisi surat -->
+<script>
+      <?php if ($this->uri->segment(3) == 'add_document' || $this->uri->segment(3) == 'prog_add_document') { ?>
+        $('form').submit(function (event) {
+        event.preventDefault(); // Menghentikan aksi default submit form
+        Swal.fire({
+            title: "Apakah anda yakin ?",
+            text: "Data disposisi akan dikirim",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#28bb4b",
+            cancelButtonColor: "#f34e4e",
+            confirmButtonText: "Iya, Kirim!",
+            allowOutsideClick: true // Mencegah penutupan pesan secara otomatis
+        }).then(function (result) {
+            if (result.isConfirmed) {
+            // Jika pengguna memilih "Iya, Simpan!"
+            Swal.fire({
+                title: 'Data Disposisi',
+                text: 'Berhasil Dikirimkan!',
+                icon: 'success',
+                didClose: () => {
+                $('form').unbind('submit').submit(); // Melanjutkan proses submit form setelah pesan ditutup
+                }
+            });
+            }
+        });
+        });
+    <?php } ?>
+</script>
+
+<!-- ubah data surat -->
+<script>
+      <?php if ($this->uri->segment(3) == 'update' || $this->uri->segment(3) == 'prog_update_surat') { ?>
+        $('form').submit(function (event) {
+        event.preventDefault(); // Menghentikan aksi default submit form
+        Swal.fire({
+            title: "Apakah anda yakin ?",
+            text: "Data surat akan di ubah",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#28bb4b",
+            cancelButtonColor: "#f34e4e",
+            confirmButtonText: "Iya, Ubah!",
+            allowOutsideClick: true // Mencegah penutupan pesan secara otomatis
+        }).then(function (result) {
+            if (result.isConfirmed) {
+            // Jika pengguna memilih "Iya, Simpan!"
+            Swal.fire({
+                title: 'Data Surat',
+                text: 'Berhasil Diubah!',
                 icon: 'success',
                 didClose: () => {
                 $('form').unbind('submit').submit(); // Melanjutkan proses submit form setelah pesan ditutup
@@ -189,11 +246,11 @@
 
 <!-- tambah data petugas -->
 <script>
-  <?php if ($this->uri->segment(1) == 'daftar_petugas' || $this->uri->segment(1) == 'pro_daftar') { ?>
+  <?php if ($this->uri->segment(2) == 'create_user' || $this->uri->segment(3) == 'process') { ?>
           $('form').submit(function (event) {
             event.preventDefault(); // Menghentikan aksi default submit form
             Swal.fire({
-                title: "Apakah anda yakin?",
+                title: "Apakah anda yakin ?",
                 text: "Data petugas akan disimpan",
                 icon: "warning",
                 showCancelButton: true,
@@ -238,7 +295,7 @@
     if (result.value) {
       Swal.fire({
         title: 'Data Petugas',
-        text: 'Berhasil DiHapus!',
+        text: 'Berhasil Dihapus!',
         icon: 'success',
         allowOutsideClick: false, // Mencegah penutupan pesan secara otomatis
         didClose: () => {
@@ -258,7 +315,7 @@
   const href = $(this).attr('href');
 
   Swal.fire({
-    title: 'Apakah anda yakin?',
+    title: 'Apakah anda yakin ?',
     text: "Data surat akan diterima!",
     icon: 'warning',
     showCancelButton: true,
@@ -280,35 +337,4 @@
     }
   });
 });
-</script>
-
-<!-- tambah data disposisi -->
-<script>
-  <?php if ($this->uri->segment(1) == 'lembar_disposisi' || $this->uri->segment(1) == 'pro_disposisi') { ?>
-          $('form').submit(function (event) {
-            event.preventDefault(); // Menghentikan aksi default submit form
-            Swal.fire({
-                title: "Apakah anda yakin?",
-                text: "Data disposisi akan disimpan",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#28bb4b",
-                cancelButtonColor: "#f34e4e",
-                confirmButtonText: "Iya, Simpan!",
-                allowOutsideClick: false // Mencegah penutupan pesan secara otomatis
-            }).then(function (result) {
-                if (result.isConfirmed) {
-                // Jika pengguna memilih "Iya, Simpan!"
-                Swal.fire({
-                    title: 'Data Disposisi',
-                    text: 'Berhasil Ditambahkan!',
-                    icon: 'success',
-                    didClose: () => {
-                    $('form').unbind('submit').submit(); // Melanjutkan proses submit form setelah pesan ditutup
-                    }
-                });
-                }
-          });
-        });
-  <?php } ?>
 </script>

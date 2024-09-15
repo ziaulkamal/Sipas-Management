@@ -8,6 +8,7 @@ class View_controller extends CI_Controller {
         parent::__construct();
         $this->load->model('View_model','views');    
         $this->load->helper('tgl_indo');
+        $this->load->helper('countdown');
         $dataNotice = array(
             'put' =>  $this->notification->push(),
 
@@ -17,12 +18,34 @@ class View_controller extends CI_Controller {
         
     }
 
+    public function suratSelesaiView() {
+        $load = $this->views->getSuratSelesai()->result();
+        $data = array(
+            'title' => 'Daftar Surat Selesai',
+            'titlePage' => 'Daftar Surat Selesai',
+            'data'  => $load,
+            'table' => true,
+            'page' => 'page/piket/Surat_selesai',
+
+        );
+        $this->load->view('index', $data);
+    }
+
+    public function sekretarisView() {
+        $load = $this->views->getSuratSelesai()->result();
+        $data = array(
+            'title' => 'Daftar Surat Selesai',
+            'titlePage' => 'Daftar Surat Selesai',
+            'data'  => $load,
+            'table' => true,
+            'page' => 'page/sekretaris/Surat_selesai',
+
+        );
+        $this->load->view('index', $data);
+    }
+
     public function piket_view()
-    {
-        // Menggunakan library Notification
-
-
-        
+    {        
         $load = $this->views->getListSurat()->result();
         $data = array(
             'title' => 'Daftar Berkas',
@@ -36,15 +59,23 @@ class View_controller extends CI_Controller {
     }
 
     function persuratan_view() {
-        $load = $this->views->getListSurat()->result();
-        $data = array(
-            'title' => 'Daftar Berkas',
-            'titlePage' => 'Daftar Berkas Masuk',
-            'data'  => $load,
-            'table' => true,
-            'page' => 'page/piket/list_berkas',
-        );
-        $this->load->view('index', $data);       
+        // jika menggunakan getListSuratPersuratan maka file yang belum di disposisi tidak keluar
+        $load = $this->views->getListSuratPersuratan()->result();
+        if ($this->session->userdata('masuk') == TRUE && $this->session->userdata('level') == '3') {
+            $data = array(
+                'title' => 'Daftar Berkas',
+                'titlePage' => 'Daftar Berkas Masuk',
+                'data'  => $load,
+                // 'sample'  => $second,
+                'table' => true,
+                'page' => 'page/persuratan/list_berkas',
+            );
+            $this->load->view('index', $data);  
+        } else {
+            $this->session->sess_destroy();
+            redirect('login');
+        }  
+     
     }
 
     function user_view()

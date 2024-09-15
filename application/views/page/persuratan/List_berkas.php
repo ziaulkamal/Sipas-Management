@@ -88,7 +88,15 @@
 												<a href="<?= base_url('persuratan/surat/update_document/').$res->idTrx ?>" class="badge badge-outline-warning"><i class="fe-edit"></i> Edit Lembaran Disposisi</a>
 												<a href="<?= base_url('tracking/surat/').$res->idTrx ?>" target="_blank" class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
 											<?php }elseif ($res->resPersuratan == 1 && $res->resPimpinan == 1) { ?>
-												<a href="<?= base_url('persuratan/surat/forward_document/').$res->idTrx ?>" class="badge badge-outline-success"><i class="fe-corner-right-up"></i> Teruskan Disposisi</a>
+												<?php switch ($res->disposisiStatusT) {
+													case '0': ?>
+														<a href="<?= base_url('persuratan/surat/forward_document/').$res->idTrx ?>" class="badge badge-outline-success"><i class="fe-corner-right-up"></i> Teruskan Disposisi</a>
+														<?php break;
+													
+													default:
+														# code...
+														break;
+												}?>
 												<a type="button" id="final-<?= $res->idTrx ?>" class="badge badge-outline-success"><i class="fe-info"></i> Proses Tujuan Akhir</a>
 												<a href="<?= base_url('tracking/surat/').$res->idTrx ?>" target="_blank" class="badge badge-outline-pink"><i class="fe-search"></i> Lacak Progress</a>
 												<a class="badge badge-outline-success"><i class="fe-clock"></i><?= countdown($res->tglPenyelesaianD); ?></a>
@@ -121,7 +129,7 @@
 											<a href="<?= base_url('piket/surat/update/').$res->idTrx ?>"
 												class="badge badge-outline-warning"><i class="fe-edit"></i> Edit</a>
 											<a href="<?= base_url('piket/surat/delete/').$res->idTrx ?>"
-												class="badge badge-outline-danger hapus-berkas"><i class="fe-trash-2"></i> Hapus</a>
+												class="badge badge-outline-danger"><i class="fe-trash-2"></i> Hapus</a>
 											<?php break;
 											} ?>
 
@@ -136,7 +144,7 @@
 										<td><?= strtoupper($res->tingkatKeamananD); ?></td>
 										<td><?= strtoupper($res->asalSuratD); ?></td>
 										<td><?= date_indo($res->tglPenerimaanD); ?></td>
-										<td><a href="<?= base_url('export_pdf/').$res->idTrx ?>"
+										<td><a href="<?= base_url('./public/lampiran/').$res->lampiranDTrx ?>"
 												class="badge badge-outline-blue" target="_blank"><i class="fe-download"></i> Download Berkas</a>
 												<?php if ($res->resPersuratan == 1 && $res->resPimpinan == 1) { ?>
 													
@@ -154,7 +162,7 @@
 											<?php break;
 												
 												default: ?>
-											<a href="<?= base_url('pimpinan/approve/surat/').$res->idTrx ?>" type="button" class="badge badge-outline-success tombol-terima"><i class="fe-check"></i> Terima </a>
+											<a href="<?= base_url('pimpinan/approve/surat/').$res->idTrx ?>" type="button" class="badge badge-outline-success"><i class="fe-check"></i> Terima </a>
 												
 
 											<a id="pimpinan-tolak-<?= $res->trxId ?>" type="button"

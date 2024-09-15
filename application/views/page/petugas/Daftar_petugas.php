@@ -43,11 +43,19 @@
 								<div class="col-md-6">
 									<label class="form-label fw-bold">Level Akses</label>
 									<select class="form-select" name="level" id="level" onchange="showSubOptions()">
-										<option default>--Pilih--</option>
+										<option value="0">--Pilih--</option>
 										<option value="1">Admin</option>
 										<option value="2">Pimpinan</option>
 										<option value="3">Persuratan</option>
 										<option value="4">Piket</option>
+										<option value="5">Asisten Pembinaaan</option>
+										<option value="6">Asisten Intelijen</option>
+										<option value="7">Asisten Tindak Pidana Umum</option>
+										<option value="8">Asisten Tindak Pidana Khusus</option>
+										<option value="9">Asisten Perdata dan Tata Usaha</option>
+										<option value="10">Asisten Pidana Militer</option>
+										<option value="11">Asisten Pengawasan</option>
+										<option value="12">Koordinator</option>
 									</select>
 								</div>
 								<div class="col-md-6" id="subOptions" style="display: none;">

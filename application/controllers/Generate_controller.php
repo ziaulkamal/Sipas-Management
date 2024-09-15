@@ -15,7 +15,7 @@ class Generate_controller extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('View_model','views');
-        
+        $this->load->helper('tgl_indo');
     }
 
     public function excel_process($idTrx)
@@ -28,12 +28,12 @@ class Generate_controller extends CI_Controller {
 
         
         $sheet->setCellValue('E5', ucfirst($load['nomorAgendaD']));
-        $sheet->setCellValue('E6', $load['tglPenerimaanD']);
-        $sheet->setCellValue('E7', $load['tglSuratMasuk']);
+        $sheet->setCellValue('E6', date_indo($load['tglPenerimaanD']));
+        $sheet->setCellValue('E7', date_indo($load['tglSuratMasuk']));
         $sheet->setCellValue('E8', ucfirst($load['asalSuratD']));
         $sheet->setCellValue('E9', ucfirst($load['ringkasanKet']));
         $sheet->setCellValue('E13', ucfirst($load['lampiranD']));
-        $sheet->setCellValue('P5', $load['tglPenyelesaianD']);
+        $sheet->setCellValue('P5', date_indo($load['tglPenyelesaianD']));
 
         if ($load['A17'] != 0) {
             $sheet->setCellValue('A17', '✓');
@@ -192,10 +192,7 @@ class Generate_controller extends CI_Controller {
             $sheet->setCellValue('Q9', '✓');
         }
 
-       
-
-
-                /* Excel File Format */
+         /* Excel File Format */
         $writer = new Xlsx($spreadsheet);
         $filename = 'Lembaran Disposisi [asal surat : '.ucfirst($load['asalSuratD']).']'.$load['tglPenyelesaianD'];
         
@@ -206,6 +203,57 @@ class Generate_controller extends CI_Controller {
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
     }
+
+    // gagal
+    public function firstDisposisi($trxId)
+    {
+        $load = $this->views->getFirstDisposisi($trxId);
+
+        
+        // echo "<pre>";
+        // print_r ($load);
+        // echo "</pre>";
+        
+        // die();
+        $template_path = './public/template/excel/template_form_disposisi.xlsx';
+        $spreadsheet = IOFactory::load($template_path);
+        $sheet = $spreadsheet->getActiveSheet();
+        
+        $sheet->setCellValue('E5', ucfirst($load['nomorAgendaD']));
+        $sheet->setCellValue('E6', date_indo($load['tglPenerimaanD']));
+        $sheet->setCellValue('E7', date_indo($load['tglSuratMasuk']));
+        $sheet->setCellValue('E8', ucfirst($load['asalSuratD']));
+        $sheet->setCellValue('E9', ucfirst($load['ringkasanKet']));
+        $sheet->setCellValue('E13', ucfirst($load['lampiranD']));
+        $sheet->setCellValue('P5', date_indo($load['tglPenyelesaianD']));
+
+        // Tingkat Keamanan
+        if ($load['Q6'] != 0) {
+            $sheet->setCellValue('Q6', '✓');
+        }
+        if ($load['Q7'] != 0) {
+            $sheet->setCellValue('Q7', '✓');
+        }
+        if ($load['Q8'] != 0) {
+            $sheet->setCellValue('Q8', '✓');
+        }
+        if ($load['Q9'] != 0) {
+            $sheet->setCellValue('Q9', '✓');
+        }
+
+         /* Excel File Format */
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'Lembaran Disposisi [asal surat : '.ucfirst($load['asalSuratD']).']'.$load['tglPenyelesaianD'];
+        
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"'); 
+        header('Cache-Control: max-age=0');
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+    }
+
+
 }
 
 /* End of file Generate_controller.php and path \application\controllers\Generate_controller.php */

@@ -22,6 +22,9 @@
 </div>
 
 </div>
+
+
+
 <script src="<?= base_url('public/') ?>js/vendor.min.js"></script>
 <script src="<?= base_url('public/') ?>js/app.min.js"></script>
 <!-- Sweet Alerts js -->

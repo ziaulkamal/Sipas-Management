@@ -15,7 +15,7 @@
 		</div>
 
 		<!-- set flash data -->
-
+		<?php $this->load->view('partials/alerts');?>
 		<div class="row">
 			<div class="col-12">
 				<div class="card">
@@ -38,17 +38,17 @@
                                     <?php 
 
                                     $no = 1;
-                                    foreach ($data as $petugas) {
+                                    foreach ($data as $ptg) {
                                     ?>
 									<tr>
 										<td class="fw-bolder"><?= $no++ ?></td>
-										<td class="fw-bolder"><?= $petugas->nama ?></td>
-										<td class="fw-bolder"><?= $petugas->user ?></td>
-										<td class="fw-bolder"><?= $petugas->level ?></td>
-										<td class="fw-bolder"><?= $petugas->regisDate ?></td>
+										<td class="fw-bolder"><?= $ptg->nama ?></td>
+										<td class="fw-bolder"><?= $ptg->user ?></td>
+										<td class="fw-bolder"><?= $ptg->level ?></td>
+										<td class="fw-bolder"><?= $ptg->regisDate ?></td>
 										<td>
-											<a href="<?= base_url('update_petugas/' . $petugas->idAuth)?>"><span class="badge label-table bg-success">Edit</span></a>
-											<a href="<?= base_url('delete/' . $petugas->idAuth)?>" class="badge label-table bg-danger tombol-hapus">Hapus</a>
+											<a href="<?= base_url('update_petugas/') . $ptg->idAuth?>"><span class="badge label-table bg-success">Edit</span></a>
+											<a href="<?= base_url('admin/delete_user/') . $ptg->idAuth?>" class="badge label-table bg-danger tombol-hapus">Hapus</a>
 										</td>
 									</tr>
                                     <?php } ?>

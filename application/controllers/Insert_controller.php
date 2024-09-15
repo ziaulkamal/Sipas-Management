@@ -26,13 +26,18 @@ class Insert_controller extends CI_Controller {
      */
     function insert_surat() {
 
-        $data = array(
-            'title' => 'Masukan Berkas Baru',
-            'titlePage' => 'Masukan Berkas Baru',
-            'page' => 'page/piket/add_berkas',
-            'action' => 'piket/go/prog_save',
-        );
-        $this->load->view('index', $data); 
+        if ($this->session->userdata('masuk') == TRUE && $this->session->userdata('level') == '4') {
+            $data = array(
+                'title' => 'Masukan Berkas Baru',
+                'titlePage' => 'Masukan Berkas Baru',
+                'page' => 'page/piket/add_berkas',
+                'action' => 'piket/go/prog_save',
+            );
+            $this->load->view('index', $data); 
+        } else{
+            $this->session->sess_destroy();
+            redirect('login');
+        }
     }
     
     /**
@@ -70,16 +75,19 @@ class Insert_controller extends CI_Controller {
                         'tglSuratMasuk' => $this->input->post('tanggal_surat'),	
                         'tglSuratProses' => date('Y-m-d'),	
                         'resPiket' => '1',		
-                        'updateTrxDate' => date('Y-m-d'),	
+                        'updateTrxDate' => date('Y-m-d'),
+                        'disposisiId'   => 'dp' . time() . date('Y')	
                     );
                     
                     $dataTwo = array(
                         'trxId' => $genTrx,	
                         'nomorDTrx' => $this->input->post('nomor_surat'),	
-                        'keteranganDTrx' => 'keterangan',		
+                        'keteranganDTrx' => $this->input->post('keterangan_surat')
+                        		
                     );
                     
                     $dataTwo['lampiranDTrx']  = $genTrx.$data_file['file_ext'];
+                    
                     $this->ins->save_surat($genTrx,$dataOne,$dataTwo);
 
                     
@@ -127,7 +135,11 @@ class Insert_controller extends CI_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             $this->create_user();
-        } else{
+        } elseif ($this->input->post('level') == 0) {
+            $this->create_user();
+        } 
+        
+        else{
             $pass = $this->input->post('pass', TRUE);
 
             $data = array(
@@ -135,8 +147,13 @@ class Insert_controller extends CI_Controller {
                 'user'         => strtolower($this->input->post('user', TRUE)),
                 'pass'         => password_hash($pass, PASSWORD_DEFAULT),
                 'regisDate'    => date('Y-m-d'),
+
                 
             );
+
+            
+
+
             if ($this->input->post('level') == 2 && $this->input->post('subLevel') == 'kajati') {
                 $data['isPimpinan'] = $this->input->post('subLevel');
                 $data['level'] = 1;
@@ -144,7 +161,10 @@ class Insert_controller extends CI_Controller {
                 $data['isPimpinan'] = $this->input->post('subLevel');
                 $data['level'] = 2;
             }
-
+            else {
+                $data['level'] = $this->input->post('level');
+            }
+            
             $this->session->set_flashdata('success', 'Data petugas berhasil ditambahkan!');
             $this->ins->insert_user($data);
             
@@ -218,14 +238,39 @@ class Insert_controller extends CI_Controller {
                     ));
                     redirect('Dashboard');
                     break;
-                default:
-                    # code...
+
+                default:                
+                if ($this->input->post('level') != $data['level']) {
+                    
+                    redirect('guest/login','refresh');
+
+                } else {
+                    $this->session->set_userdata(array(
+                        'masuk' => TRUE,
+                        'nama' => $data['nama'],
+                        'user' => $data['user'],
+                        'pass' => $data['pass'],
+                        'guest' => $this->input->post('level')                        
+                    ));
+                    redirect('Dashboard');
+                }
+               
                     break;
             }
 
         }else {
             redirect('login');
         }
+        
+    }
+
+    function login_guest() {
+        $data = array(
+            'title' => 'Login',
+            'action' => 'auth/login'
+        );
+
+        $this->load->view('page/auth/login_guest', $data);
         
     }
 

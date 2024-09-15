@@ -47,7 +47,7 @@
 									<?php if (isset($data['idTrx'])) { ?>
 										<input type="hidden" class="form-control" id="lampiran" name="lampiran_old" value="<?= $data['lampiranDTrx'] ?>">
 									<?php }?>
-									<input type="file" class="form-control" id="lampiran" name="lampiran"">
+									<input type="file" class="form-control" id="lampiran" name="lampiran">
 								</div>
 								<div class="col-md-12">
 									<label for="keterangan_surat" class="form-label">Keterangan Surat</label>

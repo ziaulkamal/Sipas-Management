@@ -4,6 +4,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class View_model extends CI_Model 
 {
         
+    function getSuratSelesai() {
+        $this->db->join('trx_detail', 'trx_detail.trxId = tb_trx.idTrx');
+        $this->db->join('tb_disposisi', 'tb_disposisi.trxId = trx_detail.trxId');
+        $this->db->join('disposisi_detail', 'disposisi_detail.disposisiId = tb_disposisi.idDisposisi');
+        $where = array(
+            'resPiket' => 1,
+            'resPersuratan' => 1,
+            'resPimpinan' => 1,
+            'resOut' => 1,
+        );
+        $this->db->where($where);
+        return $this->db->get('tb_trx');
+    
+    }
+
+
+
     /**
      * Method getListSurat
      * Dapatkan semua data list surat dari tb_trx
@@ -11,6 +28,13 @@ class View_model extends CI_Model
      */
     function getListSurat() {
         $this->db->join('trx_detail', 'trx_detail.trxId = tb_trx.idTrx');
+        $this->db->order_by('tb_trx.tglSuratMasuk', 'desc');
+        return $this->db->get('tb_trx');
+    }
+    
+    function getListSuratPersuratan() {
+        $this->db->join('trx_detail', 'trx_detail.trxId = tb_trx.idTrx');
+        $this->db->join('tb_disposisi', 'tb_disposisi.trxId = trx_detail.trxId');
         $this->db->order_by('tb_trx.tglSuratMasuk', 'desc');
         return $this->db->get('tb_trx');
     }
@@ -86,6 +110,16 @@ class View_model extends CI_Model
         $this->db->join('disposisi_detail', 'disposisi_detail.disposisiId = tb_disposisi.idDisposisi');
         $this->db->where('tb_trx.idTrx', $idTrx);
         return $this->db->get('tb_trx')->row_array();
+    }
+    
+    // gagal
+    function getFirstDisposisi($trxId) {
+        $this->db->join('trx_detail', 'trx_detail.trxId = tb_trx.idTrx');
+        $this->db->join('tb_disposisi', 'tb_disposisi.trxId = trx_detail.trxId');
+        $this->db->join('disposisi_detail', 'disposisi_detail.disposisiId = tb_disposisi.idDisposisi');
+        $this->db->where('trx_detail.trxId', $trxId);
+        return $this->db->get('tb_trx')->row_array();
+
     }
 
     function getLogTrx($levelAccess) {

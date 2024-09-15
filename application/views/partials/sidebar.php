@@ -37,7 +37,7 @@
            				</a>
            				<div class="collapse" id="menuSurat">
            					<ul class="sub-menu">
-								<?php if ($this->session->userdata('level') == 4 || $this->session->userdata('level') == 1) { ?>
+								<?php if ($this->session->userdata('level') == 4) { ?>
            						<li class="menu-item">
            							<a href="<?= base_url('piket/surat/add_document') ?>" class="menu-link">
            								<span class="menu-text">Masukan Permohonan</span>
@@ -72,14 +72,24 @@
            				</div>
            			</li>
 
-					<?php if ($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2 || $this->session->userdata('level') == 3) { ?>
+					<?php if ($this->session->userdata('level') == 4 || $this->session->userdata('level') == 3 || $this->session->userdata('level') == 2 || $this->session->userdata('level') == 1) { ?>
 					<li class="menu-item">
-           				<a href="<?= base_url('') ?>" class="menu-link">
+           				<a href="<?= base_url('surat_selesai') ?>" class="menu-link">
            					<span class="menu-icon"><i class="fe-book"></i></span>
            					<span class="menu-text"> Surat Selesai </span>
            				</a>
            			</li>
 					<?php } ?>
+					
+					<?php if ($this->session->userdata('guest') >= 4 && $this->session->userdata('guest') <= 12) { ?>
+						<li class="menu-item">
+							<a href="<?= base_url('daftar/surat_selesai') ?>" class="menu-link">
+								<span class="menu-icon"><i class="fe-book"></i></span>
+								<span class="menu-text">Surat Selesai</span>
+							</a>
+						</li>
+					<?php }  ?>
+
 					<?php if ($this->session->userdata('level') == 1) { ?>
 					   <li class="menu-item">
                             <a href="#menuCrm" data-bs-toggle="collapse" class="menu-link">
@@ -106,7 +116,7 @@
            			<li class="menu-item">
            				<a href="<?= base_url('logout')?>" class="menu-link">
            					<span class="menu-icon"><i class="fe-log-out"></i></span>
-           					<span class="menu-text"> Logout </span>
+           					<span class="menu-text"> Keluar </span>
            				</a>
            			</li>
            		</ul>

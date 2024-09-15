@@ -34,6 +34,10 @@ class Insert_model extends CI_Model
         $this->db->insert('log_trx', $logTrx2);
         $this->db->insert('tb_trx', $dataOne);
         $this->db->insert('trx_detail', $dataTwo);
+        $dataSet['idDisposisi'] = $dataOne['disposisiId'];
+        $dataSet['trxId'] = $genTrx;
+        $this->db->insert('tb_disposisi', $dataSet);
+        
         return;   
     }
     
@@ -56,7 +60,7 @@ class Insert_model extends CI_Model
         );
         $this->db->insert('log_trx', $logTrx1);    
         $logTrx2 = array(
-            'trxId' => $genTrx,
+            'trxId' => $idTrx,
             'level' => 3,
             'logDate' => date('Y-m-d'),
             'statusLog' => 1,
@@ -104,17 +108,10 @@ class Insert_model extends CI_Model
      * @return void
      */
 
-    function save_disposisi($idTrx,$data,$idDisposisi) {
-        $this->db->insert('tb_disposisi', $data);
-        // $logTrx_1 = array(
-        //     'trxId' => $idTrx,
-        //     'level' => 4,
-        //     'logDate' => date('Y-m-d'),
-        //     'statusLog' => 1,
-        //     'keteranganLog' => 'Surat telah diterima oleh persuratan dan dalam tahapan proses'
-        // );
-        // $this->db->insert('log_trx', $logTrx_1);
-
+    function save_disposisi($idTrx,$data,$id,$dataTwo) {
+        $this->db->where('idDisposisi', $id);
+        
+        $this->db->update('tb_disposisi', $data);
         $logTrx_3 = array(
             'trxId' => $idTrx,
             'level' => 3,
@@ -144,9 +141,11 @@ class Insert_model extends CI_Model
 
         $updateTrx = array(
             'resPersuratan' => 1,
-            'disposisiId' => $idDisposisi,
+            'disposisiId' => $id,
             'updateTrxDate' => date('Y-m-d'),
         );
+
+        $this->db->insert('disposisi_detail', $dataTwo);
         $this->db->where('idTrx', $idTrx);
         $this->db->update('tb_trx', $updateTrx);
         return;
@@ -201,11 +200,12 @@ class Insert_model extends CI_Model
             'keteranganLog' => 'Lembaran disposisi telah diselesaikan pimpinan'
         );
         $this->db->insert('log_trx', $logTrx_1);
-        $this->db->insert('disposisi_detail', $dataOne);
+        $this->db->update('disposisi_detail', $dataOne);
         $updateDataTwo = array(
             'partOne' => array(
                 'resPimpinan' => 1,
-                'updateTrxDate' => date('Y-m-d')
+                'updateTrxDate' => date('Y-m-d'),
+                'disposisiStatusT' => 1
             ),
             'partTwo' => array(
                 'ulasanDTrx' => 'Tuntas !'
@@ -216,11 +216,26 @@ class Insert_model extends CI_Model
         $this->db->where('trxId', $dataTwo['idTrx']);
         $this->db->update('trx_detail', $updateDataTwo['partTwo']);
         
-        
-        
-        
     }
 
+    function approve_disposisi($idTrx)
+    {
+        // Data yang akan diupdate dalam tb_trx
+        $approveDataPartOne = array(
+            'resPimpinan' => 1,
+        );
+        // Data yang akan diupdate dalam trx_detail
+        $approveDataPartTwo = array(
+            'ulasanDTrx' => 'Tuntas!',
+        );
+        // Lakukan update pada tb_trx
+        $this->db->where('idTrx', $idTrx);
+        $this->db->update('tb_trx', $approveDataPartOne);
+        // Lakukan update pada trx_detail
+        $this->db->where('trxId', $idTrx);
+        $this->db->update('trx_detail', $approveDataPartTwo);
+        
+    }
     function insert_user($data)
     {
         $this->db->insert('tb_auth', $data);
@@ -270,6 +285,13 @@ class Insert_model extends CI_Model
         $this->db->where('trxId', $idTrx);
         $this->db->update('trx_detail', $data);
         return;
+        
+    }
+
+    function deleteUser($idAuth)
+    {
+        $this->db->where('idAuth', $idAuth);
+        $this->db->delete('tb_auth');
         
     }
 

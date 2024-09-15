@@ -56,6 +56,20 @@
 										<input type="password" name="pass" class="form-control">
 									</div>
 								</div>
+                                <div class="mb-3">
+									<label class="form-label fw-bold">Pilih Level Akses</label>
+									<select class="form-select" name="level" id="level" onchange="showSubOptions()">
+										<option value="0">--Pilih--</option>
+										<option value="5">Asisten Pembinaaan</option>
+										<option value="6">Asisten Intelijen</option>
+										<option value="7">Asisten Tindak Pidana Umum</option>
+										<option value="8">Asisten Tindak Pidana Khusus</option>
+										<option value="9">Asisten Perdata dan Tata Usaha</option>
+										<option value="10">Asisten Pidana Militer</option>
+										<option value="11">Asisten Pengawasan</option>
+										<option value="12">Koordinator</option>
+									</select>
+								</div>
 								<div class="text-center d-grid">
 									<button class="btn btn-primary" type="submit"> Masuk </button>
 								</div>
